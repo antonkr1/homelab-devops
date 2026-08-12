@@ -1,0 +1,17 @@
+# Secrets - ne jamais commiter
+*.env
+.env.*
+**/secrets/
+*.pem
+*.key
+kubeconfig*
+
+# OS / éditeurs
+.DS_Store
+*.swp
+.vscode/
+
+# Terraform (à venir)
+*.tfstate
+*.tfstate.*
+.terraform/
