@@ -15,13 +15,14 @@ Box internet (Freebox)
 
 | 192.168.1.1 – 192.168.1.200 | DHCP (box, appareils du quotidien) |
 | 192.168.1.201 – 192.168.1.253 | Réservée aux IP fixes du homelab |
-| 192.168.1.254 | Déjà utilisée par un autre appareil du réseau |
+| 192.168.1.254 | Gateway de la box |
 
 ## Adressage du homelab
 
 | Machine | IP | Rôle |
 
 | Proxmox VE (traverse-town) | 192.168.1.201 | Hyperviseur |
+| VPN Tailscale | 100.69.175.18 | Accès VPN |
 | VM master | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
 | VM worker1 | 192.168.1.203 | Nœud worker Kubernetes |
 | VM worker2 | 192.168.1.204 | Nœud worker Kubernetes |
@@ -40,7 +41,7 @@ Certificat HTTPS auto-signé par défaut → avertissement navigateur normal (vo
 Un VPN Tailscale est installé directement sur l'hôte Proxmox pour permettre l'accès au homelab depuis l'extérieur du réseau local, sans ouverture de port sur la box (pratique déconseillée pour l'interface d'admin d'un serveur).
 
 - Installation : `curl -fsSL https://tailscale.com/install.sh | sh` puis `tailscale up`
-- Accès depuis l'extérieur : `https://<IP-tailscale-100.x.x.x>:8006`
+- Accès depuis l'extérieur : `https://100.69.175.18:8006`
 - Amélioration possible plus tard : activer MagicDNS + HTTPS Certificates dans l'admin Tailscale pour obtenir un vrai certificat HTTPS valide (plus d'avertissement navigateur)
 - Approfondissement prévu en Phase 5 : WireGuard natif Proxmox, pour comprendre la configuration VPN "à la main" en complément de Tailscale
 

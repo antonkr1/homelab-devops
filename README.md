@@ -13,7 +13,8 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 - ✅ Serveur assemblé et fonctionnel (i5-9600KF, 32 Go RAM, SSD 1 To)
 - ✅ Proxmox VE installé et accessible (hostname `traverse-town`, 192.168.1.201)
 - ✅ Réseau configuré (Ethernet via kit CPL, IP fixe hors plage DHCP)
-- ✅ Accès distant sécurisé via Tailscale
+- ✅ Accès distant sécurisé via Tailscale (PC fixe + portable)
+- ✅ SSH sécurisé par clé ed25519 uniquement (mot de passe désactivé)
 - 🚧 Prochaine étape : création VM Ubuntu Server + installation Docker
 
 ## Architecture visée
@@ -47,6 +48,7 @@ Chaque choix technique important (Proxmox vs bare-metal, kubeadm vs k3s, etc.) e
 
 ├── docs/ # Documentation, architecture, specs matériel, réseau, ADRs
 ├── proxmox/ # Scripts/configs pour l'hyperviseur (Ansible à venir)
+├── backups/config/        # Snapshots de configuration par hôte (ex: traverse-town/)
 ├── k8s/manifests/ # Manifests Kubernetes (apps, ingress, storage)
 ├── docker/ # Dockerfiles et docker-compose des applis dockerisées
 ├── cicd/ # Pipelines CI + configuration ArgoCD (GitOps)

@@ -10,9 +10,9 @@
 ## Phase 1 — Matériel & OS
 - [x] Installation de Proxmox VE
 - [x] Configuration réseau (IP fixe : 192.168.1.201, via kit CPL)
-- [ ] VPN (Tailscale) pour accès à distance — avancé plus tôt que prévu, besoin d'accès externe pendant le montage du reste
-- [ ] Accès SSH sécurisé (clé, pas de mot de passe)
-- [ ] Premier snapshot de configuration de base
+- [x] VPN (Tailscale) pour accès à distance — avancé plus tôt que prévu, besoin d'accès externe pendant le montage du reste
+- [x] Accès SSH sécurisé (clé, pas de mot de passe)
+- [x] Premier snapshot de configuration de base
 
 ## Phase 2 — Conteneurisation Docker
 - [ ] Créer une VM Ubuntu Server dédiée
