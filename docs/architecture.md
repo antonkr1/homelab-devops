@@ -2,27 +2,37 @@
 
 ## Vue d'ensemble
 
-```
 ┌─────────────────────────────────────────────┐
-│              Serveur physique                │
-│         i5-9600KF · 32 Go RAM · SSD 1To      │
-└──────────────────────┬────────────────────────┘
-                        │
-                 ┌──────▼──────┐
-                 │  Proxmox VE  │  (hyperviseur)
-                 └──────┬──────┘
-          ┌─────────────┼─────────────┐
-          │             │             │
-    ┌─────▼─────┐ ┌─────▼─────┐ ┌─────▼─────┐
-    │  VM master │ │ VM worker1│ │ VM worker2│
-    │  Ubuntu +  │ │ Ubuntu +  │ │ Ubuntu +  │
-    │    k3s     │ │    k3s    │ │    k3s    │
-    └────────────┘ └───────────┘ └───────────┘
-```
+│ Serveur physique                            │
+│ i5-9600KF · 32 Go RAM · SSD 1To             │
+│ hostname: traverse-town                     │
+└──────────────────────┬──────────────────────┘
+                       │
+         ┌─────────────▼────────────┐
+         │ Proxmox VE (hyperviseur) │
+         │ 192.168.1.201            │
+         └─────────────┬────────────┘
+         ┌─────────────┼─────────────┐
+         │             │             │
+   ┌─────▼─────┐ ┌─────▼─────┐ ┌─────▼─────┐
+   │ VM master │ │ VM worker1│ │ VM worker2│
+   │ Ubuntu +  │ │ Ubuntu +  │ │ Ubuntu +  │
+   │ Kubernetes│ │ Kubernetes│ │ Kubernetes│
+   │ (kubeadm) │ │ (kubeadm) │ │ (kubeadm) │
+   │ .202      │ │ .203      │ │ .204      │
+   └───────────┘ └───────────┘ └───────────┘
 
-## Couches applicatives sur le cluster k3s
 
-- **Ingress** : Traefik (fourni avec k3s par défaut)
+   ## Installation Kubernetes
+
+Cluster monté "à la main" via **kubeadm** plutôt qu'une distribution allégée type k3s — choix assumé pour comprendre chaque composant en profondeur (voir [ADR 0002](decisions/0002-kubeadm-vs-k3s.md)).
+
+- **Container runtime** : containerd
+- **CNI (réseau des pods)** : Calico
+- **Ingress** : nginx-ingress (à installer manuellement, k3s l'inclut par défaut mais pas kubeadm)
+
+## Couches applicatives sur le cluster Kubernetes
+
 - **CI/CD** : Gitea (dépôt Git self-hosted) + runner CI + ArgoCD (GitOps)
 - **Observabilité** : Prometheus (métriques) + Grafana (dashboards) + Loki (logs)
 - **Sécurité** : Vault (secrets), cert-manager (TLS auto)
@@ -30,8 +40,10 @@
 
 ## Réseau
 
-- IP fixe réservée sur le routeur (réservation DHCP par adresse MAC)
-- Accès SSH par clé uniquement, pas de mot de passe
+- Connexion Ethernet obligatoire (Proxmox ne gère pas le WiFi) — serveur à l'étage relié à la box via kit CPL + switch TP-Link TL-SG105
+- Plage DHCP de la box : 192.168.1.1 à 192.168.1.200
+- Plage réservée aux IP fixes du homelab : 192.168.1.201-253 (voir [network.md](network.md))
+- Accès SSH par clé uniquement, pas de mot de passe (à mettre en place)
 
 ## Décisions
 
