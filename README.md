@@ -8,14 +8,15 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 
 ## Statut actuel
 
-🚧 En cours — Phase 1 terminée, Phase 2 (conteneurisation Docker) à démarrer
+🚧 En cours — Phase 2 quasi terminée (conteneurisation Docker), Phase 3 (Kubernetes) à démarrer
 
 - ✅ Serveur assemblé et fonctionnel (i5-9600KF, 32 Go RAM, SSD 1 To)
 - ✅ Proxmox VE installé et accessible (hostname `traverse-town`, 192.168.1.201)
 - ✅ Réseau configuré (Ethernet via kit CPL, IP fixe hors plage DHCP)
-- ✅ Accès distant sécurisé via Tailscale (PC fixe + portable)
-- ✅ SSH sécurisé par clé ed25519 uniquement (mot de passe désactivé)
-- 🚧 Prochaine étape : création VM Ubuntu Server + installation Docker
+- ✅ Accès distant sécurisé via Tailscale
+- ✅ SSH sécurisé par clé ed25519 uniquement
+- ✅ VM Docker (`gummi-workshop`, 192.168.1.205) : première app Flask dockerisée et poussée sur Docker Hub
+- 🚧 Prochaine étape : création des VMs Kubernetes (master + 2 workers), installation kubeadm
 
 ## Architecture visée
 Serveur physique (traverse-town)

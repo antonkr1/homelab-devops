@@ -20,14 +20,13 @@ Box internet (Freebox)
 ## Adressage du homelab
 
 | Machine | IP | Rôle |
-
+|---|---|---|
 | Proxmox VE (traverse-town) | 192.168.1.201 | Hyperviseur |
-| VPN Tailscale | 100.69.175.18 | Accès VPN |
 | VM master | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
 | VM worker1 | 192.168.1.203 | Nœud worker Kubernetes |
 | VM worker2 | 192.168.1.204 | Nœud worker Kubernetes |
-| Réservé futurs services | 192.168.1.205 – 210 | — |
-
+| gummi-workshop | 192.168.1.205 | VM Docker (conteneurisation) |
+| Réservé futurs services | 192.168.1.206 – 210 | — |
 
 ## Accès à l'interface Proxmox
 

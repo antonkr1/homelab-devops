@@ -15,11 +15,11 @@
 - [x] Premier snapshot de configuration de base
 
 ## Phase 2 — Conteneurisation Docker
-- [ ] Créer une VM Ubuntu Server dédiée
-- [ ] Installer Docker dessus
-- [ ] Dockeriser une première application perso
-- [ ] Écrire un docker-compose pour un stack multi-conteneurs
-- [ ] Push des images sur un registry (Docker Hub ou registry perso)
+- [x] Créer une VM Ubuntu Server dédiée
+- [x] Installer Docker dessus
+- [x] Dockeriser une première application perso
+- [ ] Écrire un docker-compose pour un stack multi-conteneurs reporté, prévu avec une vraie app multi-services plus tard
+- [x] Push des images sur un registry (Docker Hub ou registry perso)
 
 ## Phase 3 — Cluster Kubernetes (kubeadm, approche "hard way")
 - [ ] Créer les VMs (1 master + 2 workers) sous Proxmox
