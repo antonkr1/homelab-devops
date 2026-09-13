@@ -19,6 +19,7 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 - 🚧 Prochaine étape : création des VMs Kubernetes (master + 2 workers), installation kubeadm
 
 ## Architecture visée
+```
 Serveur physique (traverse-town)
 └── Proxmox VE (hyperviseur) — 192.168.1.201
       ├── VM master : Ubuntu Server → Kubernetes via kubeadm — 192.168.1.202
@@ -26,6 +27,7 @@ Serveur physique (traverse-town)
       └── VM worker2 : Ubuntu Server → Kubernetes via kubeadm — 192.168.1.204
             └── CI/CD (Gitea + ArgoCD)
             └── Observabilité (Prometheus + Grafana + Loki)
+```
 
 Voir [docs/architecture.md](docs/architecture.md) pour le détail.
 
@@ -47,13 +49,16 @@ Chaque choix technique important (Proxmox vs bare-metal, kubeadm vs k3s, etc.) e
 
 ## Structure du repo
 
-├── docs/ # Documentation, architecture, specs matériel, réseau, ADRs
-├── proxmox/ # Scripts/configs pour l'hyperviseur (Ansible à venir)
+```
+├── docs/                  # Documentation, architecture, specs matériel, réseau, ADRs
+│   └── notes/             # Notes techniques et journal de bord au fil du projet
 ├── backups/config/        # Snapshots de configuration par hôte (ex: traverse-town/)
-├── k8s/manifests/ # Manifests Kubernetes (apps, ingress, storage)
-├── docker/ # Dockerfiles et docker-compose des applis dockerisées
-├── cicd/ # Pipelines CI + configuration ArgoCD (GitOps)
-└── monitoring/ # Configuration Prometheus, Grafana, Loki
+├── proxmox/               # Scripts/configs pour l'hyperviseur (Ansible à venir)
+├── k8s/manifests/         # Manifests Kubernetes (apps, ingress, storage)
+├── docker/                # Dockerfiles et docker-compose des applis dockerisées
+├── cicd/                  # Pipelines CI + configuration ArgoCD (GitOps)
+└── monitoring/            # Configuration Prometheus, Grafana, Loki
+```
 
 ## Journal de bord
 

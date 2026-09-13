@@ -21,10 +21,10 @@ Box internet (Freebox)
 
 | Machine | IP | Rôle |
 |---|---|---|
-| Proxmox VE (traverse-town) | 192.168.1.201 | Hyperviseur |
-| VM master | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
-| VM worker1 | 192.168.1.203 | Nœud worker Kubernetes |
-| VM worker2 | 192.168.1.204 | Nœud worker Kubernetes |
+| traverse-town | 192.168.1.201 | Hyperviseur (Proxmox VE) |
+| destiny-islands | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
+| radiant-garden | 192.168.1.203 | Nœud worker Kubernetes |
+| twilight-town | 192.168.1.204 | Nœud worker Kubernetes |
 | gummi-workshop | 192.168.1.205 | VM Docker (conteneurisation) |
 | Réservé futurs services | 192.168.1.206 – 210 | — |
 

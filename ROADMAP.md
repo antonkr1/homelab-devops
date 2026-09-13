@@ -22,14 +22,16 @@
 - [x] Push des images sur un registry (Docker Hub ou registry perso)
 
 ## Phase 3 — Cluster Kubernetes (kubeadm, approche "hard way")
-- [ ] Créer les VMs (1 master + 2 workers) sous Proxmox
-- [ ] Installer containerd sur chaque nœud
-- [ ] Installer kubeadm, kubelet, kubectl sur chaque nœud
-- [ ] Initialiser le control plane (kubeadm init) sur le master
-- [ ] Installer un CNI (Calico)
-- [ ] Joindre les workers au cluster (kubeadm join)
-- [ ] Déployer une première app pour valider le cluster
-- [ ] Configurer l'ingress manuellement (nginx-ingress)
+- [x] Créer les VMs (1 master + 2 workers) sous Proxmox
+- [x] Installer containerd sur chaque nœud
+- [x] Installer kubeadm, kubelet, kubectl sur chaque nœud
+- [x] Initialiser le control plane (kubeadm init) sur le master
+- [x] Installer un CNI (Calico)
+- [x] Joindre les workers au cluster (kubeadm join)
+- [x] Déployer une première app pour valider le cluster (`auto-gw-report`, image privée Docker Hub)
+- [x] Configurer l'ingress manuellement (nginx-ingress, testé via NodePort HTTP)
+- [ ] HTTPS sur l'ingress (port NodePort 31850 déployé mais pas encore configuré)
+- [ ] DNS local (Pi-hole) pour remplacer l'accès IP+port brut par un nom de domaine interne
 
 ## Phase 4 — CI/CD & GitOps
 - [ ] Héberger Gitea

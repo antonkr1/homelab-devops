@@ -2,6 +2,7 @@
 
 ## Vue d'ensemble
 
+```
 ┌─────────────────────────────────────────────┐
 │ Serveur physique                            │
 │ i5-9600KF · 32 Go RAM · SSD 1To             │
@@ -21,6 +22,7 @@
    │ (kubeadm) │ │ (kubeadm) │ │ (kubeadm) │
    │ .202      │ │ .203      │ │ .204      │
    └───────────┘ └───────────┘ └───────────┘
+```
 
 
    ## Installation Kubernetes
