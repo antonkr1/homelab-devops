@@ -1,13 +1,14 @@
 # Configuration réseau
 
 ## Topologie physique
-
+```
 Box internet (Freebox)
     └── Switch TP-Link TL-SG105
         └── Boîtier CPL n°1
     ⚡ liaison courant porteur (inter-étages) ⚡
         └── Boîtier CPL n°2
             └── Serveur Proxmox (traverse-town)
+```
 
 ## Plages IP
 
@@ -43,6 +44,31 @@ Un VPN Tailscale est installé directement sur l'hôte Proxmox pour permettre l'
 - Accès depuis l'extérieur : `https://100.69.175.18:8006`
 - Amélioration possible plus tard : activer MagicDNS + HTTPS Certificates dans l'admin Tailscale pour obtenir un vrai certificat HTTPS valide (plus d'avertissement navigateur)
 - Approfondissement prévu en Phase 5 : WireGuard natif Proxmox, pour comprendre la configuration VPN "à la main" en complément de Tailscale
+
+## Accès aux services du cluster
+
+| Service | Adresse | Statut |
+|---|---|---|
+| Ingress HTTP | `http://192.168.1.202:30153` (ou `.203`/`.204`, NodePort identique sur les 3 nœuds) | ✅ fonctionnel |
+| Ingress HTTPS | `https://192.168.1.202:31850` | ⏳ déployé, pas encore configuré |
+| App de test (`auto-gw-report`) | via Ingress HTTP ci-dessus | ✅ validée de bout en bout |
+
+Accès actuel via IP + port brut — un DNS local (Pi-hole) est prévu pour remplacer ça par un nom de domaine interne cohérent avec le thème du homelab (ex: `auto-gw-report.traverse-town.local`).
+
+## DNS local — Pi-hole
+
+Déployé en container sur `gummi-workshop` (192.168.1.205). Résout les noms en `.home` vers les IP internes du homelab, ex : 
+
+destiny-islands.home → 192.168.1.202
+gummi-workshop.home → 192.168.1.205
+
+## Services Phase 4
+
+| Service | Adresse | Rôle |
+|---|---|---|
+| Gitea | `http://gummi-workshop.home:3000` (ou `192.168.1.205:3000`) | Git self-hosted, dépôt `auto-gw-report` |
+| Gitea SSH | port `2222` (décalé du port SSH natif de la VM) | Clone/push en SSH |
+| ArgoCD | NodePort sur le cluster (443 → port custom) | Interface GitOps |
 
 ## Notes / galères rencontrées
 

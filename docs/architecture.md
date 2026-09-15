@@ -47,6 +47,23 @@ Cluster monté "à la main" via **kubeadm** plutôt qu'une distribution allégé
 - Plage réservée aux IP fixes du homelab : 192.168.1.201-253 (voir [network.md](network.md))
 - Accès SSH par clé uniquement, pas de mot de passe (à mettre en place)
 
+## Couches applicatives sur le cluster Kubernetes
+
+- **CI/CD** : Gitea (self-hosted sur `gummi-workshop`, hors cluster) + Gitea Actions (runner dédié) + ArgoCD (GitOps, sur le cluster)
+- **DNS local** : Pi-hole (sur `gummi-workshop`), résolution des `.home`
+- **Observabilité** : Prometheus (métriques) + Grafana (dashboards) + Loki (logs) — à venir Phase 5
+- **Sécurité** : Vault (secrets), cert-manager (TLS auto), 2FA Proxmox — à venir Phase 5
+- **Apps hébergées** : `auto-gw-report` (Flask, image privée Docker Hub)
+
+## Flux GitOps
+
+```
+Push sur Gitea (main)
+   → Gitea Actions (runner dédié) : build image Docker + push Docker Hub
+   → ArgoCD détecte le changement dans le dossier k8s/ du repo (polling ~3 min, ou refresh manuel)
+   → Synchronisation automatique sur le cluster (namespace default)
+```
+
 ## Décisions
 
 Voir [decisions/](decisions/) pour le détail argumenté de chaque choix technique.

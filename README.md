@@ -8,15 +8,14 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 
 ## Statut actuel
 
-🚧 En cours — Phase 2 quasi terminée (conteneurisation Docker), Phase 3 (Kubernetes) à démarrer
+🚧 En cours — Phase 4 (CI/CD & GitOps) terminée, Phase 5 (Observabilité & sécurité) à venir
 
-- ✅ Serveur assemblé et fonctionnel (i5-9600KF, 32 Go RAM, SSD 1 To)
-- ✅ Proxmox VE installé et accessible (hostname `traverse-town`, 192.168.1.201)
-- ✅ Réseau configuré (Ethernet via kit CPL, IP fixe hors plage DHCP)
-- ✅ Accès distant sécurisé via Tailscale
-- ✅ SSH sécurisé par clé ed25519 uniquement
-- ✅ VM Docker (`gummi-workshop`, 192.168.1.205) : première app Flask dockerisée et poussée sur Docker Hub
-- 🚧 Prochaine étape : création des VMs Kubernetes (master + 2 workers), installation kubeadm
+- ✅ Cluster Kubernetes 3 nœuds opérationnel (kubeadm, v1.31.14)
+- ✅ CNI Calico + Ingress nginx (HTTP) fonctionnels
+- ✅ Pi-hole déployé sur `gummi-workshop` : DNS interne, résolution des `.home`
+- ✅ Gitea self-hosted (`gummi-workshop`, port 3000) avec pipeline CI (Gitea Actions : build + push Docker Hub)
+- ✅ ArgoCD sur le cluster : déploiement GitOps automatique validé (Gitea → ArgoCD → cluster)
+- 🚧 Prochaine étape : Phase 5 — observabilité (Prometheus/Grafana/Loki) et sécurité (Vault, cert-manager, 2FA Proxmox)
 
 ## Architecture visée
 ```

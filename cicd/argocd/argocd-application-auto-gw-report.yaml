@@ -1,0 +1,145 @@
+# Export de la définition Application ArgoCD pour auto-gw-report
+# Généré via : kubectl get application auto-gw-report -n argocd -o yaml
+
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/hydrate: normal
+  creationTimestamp: "2026-09-15T10:43:27Z"
+  generation: 42
+  name: auto-gw-report
+  namespace: argocd
+  resourceVersion: "30217"
+  uid: 19b07a64-8a23-4a35-95f8-0a05c0969db1
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: k8s
+    repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: false
+      selfHeal: false
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2026-09-15T10:47:41Z"
+    status: Healthy
+  history:
+  - deployStartedAt: "2026-09-15T10:43:27Z"
+    deployedAt: "2026-09-15T10:43:28Z"
+    id: 0
+    initiatedBy:
+      automated: true
+    revision: 535f67d10a32d48135fe083fe39cff44d5c6692a
+    source:
+      path: k8s
+      repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+      targetRevision: main
+  - deployStartedAt: "2026-09-15T10:47:31Z"
+    deployedAt: "2026-09-15T10:47:31Z"
+    id: 1
+    initiatedBy:
+      automated: true
+    revision: d5da6b2f614603713efd9a8c9aaf9d00c9738b64
+    source:
+      path: k8s
+      repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+      targetRevision: main
+  operationState:
+    finishedAt: "2026-09-15T10:47:31Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        revision: d5da6b2f614603713efd9a8c9aaf9d00c9738b64
+        source:
+          path: k8s
+          repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+          targetRevision: main
+    phase: Succeeded
+    startedAt: "2026-09-15T10:47:31Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/auto-gw-report-service unchanged
+        name: auto-gw-report-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        images:
+        - antnk/auto-gw-report:latest
+        kind: Deployment
+        message: deployment.apps/auto-gw-report configured
+        name: auto-gw-report
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: networking.k8s.io
+        hookPhase: Running
+        kind: Ingress
+        message: ingress.networking.k8s.io/auto-gw-report-ingress unchanged
+        name: auto-gw-report-ingress
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: d5da6b2f614603713efd9a8c9aaf9d00c9738b64
+      source:
+        path: k8s
+        repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+        targetRevision: main
+  reconciledAt: "2026-09-15T12:07:55Z"
+  resourceHealthSource: appTree
+  resources:
+  - kind: Service
+    name: auto-gw-report-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    kind: Deployment
+    name: auto-gw-report
+    namespace: default
+    status: Synced
+    version: v1
+  - group: networking.k8s.io
+    kind: Ingress
+    name: auto-gw-report-ingress
+    namespace: default
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Directory
+  summary:
+    externalURLs:
+    - http://192.168.1.204/
+    images:
+    - antnk/auto-gw-report:latest
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        path: k8s
+        repoURL: http://192.168.1.205:3000/anton/auto-gw-report.git
+        targetRevision: main
+    revision: 70780bf4319dedc3388fa8b55f5e6a16cb688031
+    status: Synced

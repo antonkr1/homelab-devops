@@ -30,14 +30,14 @@
 - [x] Joindre les workers au cluster (kubeadm join)
 - [x] Déployer une première app pour valider le cluster (`auto-gw-report`, image privée Docker Hub)
 - [x] Configurer l'ingress manuellement (nginx-ingress, testé via NodePort HTTP)
-- [ ] HTTPS sur l'ingress (port NodePort 31850 déployé mais pas encore configuré)
-- [ ] DNS local (Pi-hole) pour remplacer l'accès IP+port brut par un nom de domaine interne
+- [x] HTTPS sur l'ingress (port NodePort 31850 déployé mais pas encore configuré)
+- [x] DNS local (Pi-hole) pour remplacer l'accès IP+port brut par un nom de domaine interne
 
 ## Phase 4 — CI/CD & GitOps
-- [ ] Héberger Gitea
-- [ ] Mettre en place un pipeline CI (build + test + push image)
-- [ ] Installer ArgoCD
-- [ ] Premier déploiement en GitOps (push → sync auto)
+- [x] Héberger Gitea
+- [x] Mettre en place un pipeline CI (build + test + push image)
+- [x] Installer ArgoCD
+- [x] Premier déploiement en GitOps (push → sync auto)
 
 ## Phase 5 — Observabilité & sécurité
 - [ ] Déployer Prometheus + Grafana
