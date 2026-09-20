@@ -8,14 +8,15 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 
 ## Statut actuel
 
-🚧 En cours — Phase 4 (CI/CD & GitOps) terminée, Phase 5 (Observabilité & sécurité) à venir
+## Statut actuel
 
-- ✅ Cluster Kubernetes 3 nœuds opérationnel (kubeadm, v1.31.14)
-- ✅ CNI Calico + Ingress nginx (HTTP) fonctionnels
-- ✅ Pi-hole déployé sur `gummi-workshop` : DNS interne, résolution des `.home`
-- ✅ Gitea self-hosted (`gummi-workshop`, port 3000) avec pipeline CI (Gitea Actions : build + push Docker Hub)
-- ✅ ArgoCD sur le cluster : déploiement GitOps automatique validé (Gitea → ArgoCD → cluster)
-- 🚧 Prochaine étape : Phase 5 — observabilité (Prometheus/Grafana/Loki) et sécurité (Vault, cert-manager, 2FA Proxmox)
+🚧 En cours — Phase 5 (Observabilité & sécurité) terminée, dette technique à traiter avant Phase 6
+
+- ✅ Cluster Kubernetes 3 nœuds opérationnel (kubeadm, v1.31.14), CNI Calico, Ingress nginx
+- ✅ Gitea self-hosted + pipeline CI (Gitea Actions) + ArgoCD (GitOps automatique)
+- ✅ Observabilité : Prometheus + Grafana + Loki/Promtail (via Helm)
+- ✅ Sécurité : Vault (secrets centralisés), cert-manager (TLS interne via CA auto-signée), Network Policies Calico, 2FA sur Proxmox
+- 🚧 Prochaine étape : stockage persistant pour Prometheus/Loki, puis planification Phase 6
 
 ## Architecture visée
 ```

@@ -70,6 +70,12 @@ gummi-workshop.home → 192.168.1.205
 | Gitea SSH | port `2222` (décalé du port SSH natif de la VM) | Clone/push en SSH |
 | ArgoCD | NodePort sur le cluster (443 → port custom) | Interface GitOps |
 
+## TLS interne — cert-manager
+
+Une CA auto-signée (`internal-ca-issuer`) génère les certificats HTTPS pour les services en `.home`. Pour éviter l'avertissement navigateur, la CA doit être installée dans le magasin de confiance de chaque appareil client (testé et validé sous Windows).
+
+Les services exposés publiquement plus tard (site, serveur de jeu) utiliseront Let's Encrypt en parallèle — les deux CA coexistent sans conflit, chacune sur son périmètre.
+
 ## Notes / galères rencontrées
 
 - **Connexion Ethernet obligatoire** : Proxmox ne gère pas le WiFi par défaut, contrairement à un live Linux classique — piège classique de débutant.

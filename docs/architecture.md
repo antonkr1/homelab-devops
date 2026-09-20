@@ -35,10 +35,16 @@ Cluster monté "à la main" via **kubeadm** plutôt qu'une distribution allégé
 
 ## Couches applicatives sur le cluster Kubernetes
 
-- **CI/CD** : Gitea (dépôt Git self-hosted) + runner CI + ArgoCD (GitOps)
-- **Observabilité** : Prometheus (métriques) + Grafana (dashboards) + Loki (logs)
-- **Sécurité** : Vault (secrets), cert-manager (TLS auto)
-- **Apps hébergées** : à définir (Nextcloud, Pi-hole, Jellyfin, blog perso...)
+- **CI/CD** : Gitea (self-hosted sur `gummi-workshop`, hors cluster) + Gitea Actions (runner dédié) + ArgoCD (GitOps, sur le cluster)
+- **DNS local** : Pi-hole (sur `gummi-workshop`), résolution des `.home`
+- **Observabilité** : Prometheus + Grafana (Helm, namespace `monitoring`) + Loki/Promtail (Helm, même namespace)
+- **Sécurité** :
+  - Vault (Helm, mode persistant) — secrets centralisés sous `homelab/` (KV v2) : `dockerhub-pull`, `dockerhub-ci`, `pihole`
+  - cert-manager + CA interne auto-signée — TLS pour les services `.home`, coexistera avec Let's Encrypt pour les futurs services exposés publiquement
+  - Network Policies (Calico) — restriction du trafic pod-à-pod, seul l'Ingress peut atteindre les services applicatifs
+  - 2FA (TOTP) sur l'interface web Proxmox
+- **Stockage** : `local-path-provisioner`, StorageClass par défaut du cluster
+- **Apps hébergées** : `auto-gw-report` (Flask, image privée Docker Hub, HTTPS via CA interne)
 
 ## Réseau
 

@@ -40,12 +40,17 @@
 - [x] Premier déploiement en GitOps (push → sync auto)
 
 ## Phase 5 — Observabilité & sécurité
-- [ ] Déployer Prometheus + Grafana
-- [ ] Centraliser les logs avec Loki
-- [ ] Mettre en place Vault pour la gestion des secrets
-- [ ] TLS automatique avec cert-manager
-- [ ] Network policies de base
+- [x] Déployer Prometheus + Grafana (Helm, kube-prometheus-stack)
+- [x] Centraliser les logs avec Loki (Helm, loki-stack + Promtail)
+- [x] Mettre en place Vault pour la gestion des secrets (Helm, mode persistant, KV v2)
+- [x] TLS automatique avec cert-manager (CA interne auto-signée, usage `.home`)
+- [x] Network policies de base (Calico, restriction trafic sur `auto-gw-report`)
 - [ ] WireGuard natif Proxmox — approfondissement VPN une fois Tailscale déjà en place
+- [x] 2FA sur l'interface web Proxmox (TOTP activé sur `root@pam`)
+
+## Dette technique / à corriger
+- [ ] Ajouter du stockage persistant (PVC) pour Prometheus et Loki — perdent tout leur historique à chaque redémarrage de pod, maintenant que `local-path-provisioner` est disponible
+- [ ] Vérifier si `radiant-garden` a le même souci de disque LVM non étendu que `twilight-town`
 
 ## Bonus / idées futures
 - [ ] Héberger un vrai service utile (Nextcloud, Pi-hole, Jellyfin)
