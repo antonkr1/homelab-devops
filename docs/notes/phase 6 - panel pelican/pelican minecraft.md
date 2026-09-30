@@ -12,7 +12,7 @@ Installé en binaire natif (pas en container), service systemd dédié. FQDN con
 Piège rencontré : un test `wings --debug` interrompu au `Ctrl+C` a laissé un processus fantôme bloquant le port pour le vrai service systemd — identifié via `ss -tulpn`, tué manuellement.
 
 ## Serveur Minecraft
-Créé via l'Egg Paper : 2048 Mo RAM, 10 Go disque, port 25565. Whitelist activée par défaut, gérée depuis la console (`whitelist add <pseudo>`).
+Créé via l'Egg Paper : 2048 Mo RAM, 10 Go disque, port 25565. Whitelist activée par défaut, gérée depuis la console.
 
 ## Domaine et exposition externe
 Domaine `traverse-town.com` acheté (Cloudflare). Enregistrement A (`direct.traverse-town.com`) séparé du nom public utilisé pour se connecter. Enregistrement SRV pour la connexion sans port — piège rencontré : le SRV doit correspondre exactement au sous-domaine tapé par le joueur (`mc`), pas au nom de l'enregistrement A cible.
