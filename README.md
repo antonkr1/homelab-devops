@@ -8,15 +8,12 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 
 ## Statut actuel
 
-## Statut actuel
+🚧 En cours — Phases 1 à 5 terminées, projets annexes (Minecraft, provisioning automatisé) en cours
 
-🚧 En cours — Phase 5 (Observabilité & sécurité) terminée, dette technique à traiter avant Phase 6
-
-- ✅ Cluster Kubernetes 3 nœuds opérationnel (kubeadm, v1.31.14), CNI Calico, Ingress nginx
-- ✅ Gitea self-hosted + pipeline CI (Gitea Actions) + ArgoCD (GitOps automatique)
-- ✅ Observabilité : Prometheus + Grafana + Loki/Promtail (via Helm)
-- ✅ Sécurité : Vault (secrets centralisés), cert-manager (TLS interne via CA auto-signée), Network Policies Calico, 2FA sur Proxmox
-- 🚧 Prochaine étape : stockage persistant pour Prometheus/Loki, puis planification Phase 6
+- ✅ Infrastructure complète : Proxmox, cluster Kubernetes 3 nœuds, CI/CD GitOps, observabilité, sécurité (voir ROADMAP.md pour le détail par phase)
+- ✅ Serveur Minecraft (Pelican + Wings) accessible en local et depuis l'extérieur, sans port à préciser (nom de domaine + SRV)
+- ✅ Provisioning automatisé : Terraform opérationnel (template cloud-init + clonage automatique de VM en quelques secondes), depuis une VM control node dédiée (`gummi-ship`)
+- 🚧 En cours : Ansible (configuration post-provisioning), HTTPS pour Pelican/Wings (accès géré via Tailscale pour l'instant)
 
 ## Architecture visée
 ```
@@ -50,13 +47,17 @@ Chaque choix technique important (Proxmox vs bare-metal, kubeadm vs k3s, etc.) e
 ## Structure du repo
 
 ```
-├── docs/                  # Documentation, architecture, specs matériel, réseau, ADRs
-│   └── notes/             # Notes techniques et journal de bord au fil du projet
-├── backups/config/        # Snapshots de configuration par hôte (ex: traverse-town/)
-├── proxmox/               # Scripts/configs pour l'hyperviseur (Ansible à venir)
-├── k8s/manifests/         # Manifests Kubernetes (apps, ingress, storage)
-├── docker/                # Dockerfiles et docker-compose des applis dockerisées
-├── cicd/                  # Pipelines CI + configuration ArgoCD (GitOps)
+.
+├── .gitea/workflows/      # Pipelines CI (Gitea Actions)
+├── docs/
+│   ├── decisions/         # ADR — décisions d'architecture structurantes
+│   └── notes/             # Notes techniques et journal de bord par sujet
+├── backups/config/        # Snapshots de configuration par hôte
+├── proxmox/               # Scripts/configs pour l'hyperviseur
+├── k8s/manifests/         # Manifests Kubernetes (apps, ingress, storage, cert-manager)
+├── docker/                # Dockerfiles et docker-compose des applis
+├── cicd/argocd/           # Manifestes ArgoCD (Application, config repo)
+├── terraform/             # Configuration Terraform (provisioning VMs)
 └── monitoring/            # Configuration Prometheus, Grafana, Loki
 ```
 
