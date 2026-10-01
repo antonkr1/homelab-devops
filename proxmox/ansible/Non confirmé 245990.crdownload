@@ -1,0 +1,11 @@
+[docker_hosts]
+docker-host ansible_host=192.168.1.205 ansible_user=anton
+hundred-acre-wood ansible_host=192.168.1.206 ansible_user=anton
+
+[k8s_cluster]
+destiny-islands ansible_host=192.168.1.202 ansible_user=anton
+radiant-garden ansible_host=192.168.1.203 ansible_user=anton
+twilight-town ansible_host=192.168.1.204 ansible_user=anton
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

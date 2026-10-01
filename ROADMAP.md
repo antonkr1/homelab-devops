@@ -48,9 +48,22 @@
 - [ ] WireGuard natif Proxmox — approfondissement VPN une fois Tailscale déjà en place
 - [x] 2FA sur l'interface web Proxmox (TOTP activé sur `root@pam`)
 
-## Dette technique / à corriger
-- [ ] Ajouter du stockage persistant (PVC) pour Prometheus et Loki — perdent tout leur historique à chaque redémarrage de pod, maintenant que `local-path-provisioner` est disponible
-- [ ] Vérifier si `radiant-garden` a le même souci de disque LVM non étendu que `twilight-town`
+## Pelican / Minecraft
+- [x] VM dédiée hundred-acre-wood créée (192.168.1.206) — isolée du reste pour un service exposé publiquement
+- [x] Panel Pelican + Wings installés en docker-compose (K8s abandonné — bug connu/documenté de Pelican avec l'installateur web)
+- [x] Serveur Minecraft (Paper) fonctionnel via Pelican
+- [x] Domaine traverse-town.com acheté, redirection de port Freebox, SRV configuré
+- [x] Connexion sans port (SRV) validée — fonctionnel depuis l'extérieur
+- [ ] HTTPS sur Pelican Panel et Wings (actuellement HTTP simple, IP brute)
+
+## Terraform / Ansible (provisioning automatisé)
+- [x] VM control node gummi-ship créée (192.168.1.207)
+- [x] Ansible + Terraform installés
+- [x] Authentification Proxmox (API Token) configurée pour Terraform
+- [x] Template cloud-init Ubuntu 24.04 créé (VM ID 9000)
+- [x] Premier clonage automatisé validé (IP + clé SSH injectées automatiquement)
+- [x] Premier playbook Ansible (install-docker.yml) — testé et idempotent sur gummi-workshop et hundred-acre-wood
+- [ ] Playbook Ansible pour le cluster k8s_cluster (containerd, kubeadm, kubelet, kubectl)
 
 ## Bonus / idées futures
 - [ ] Héberger un vrai service utile (Nextcloud, Pi-hole, Jellyfin)

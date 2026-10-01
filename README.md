@@ -13,17 +13,24 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 - ✅ Infrastructure complète : Proxmox, cluster Kubernetes 3 nœuds, CI/CD GitOps, observabilité, sécurité (voir ROADMAP.md pour le détail par phase)
 - ✅ Serveur Minecraft (Pelican + Wings) accessible en local et depuis l'extérieur, sans port à préciser (nom de domaine + SRV)
 - ✅ Provisioning automatisé : Terraform opérationnel (template cloud-init + clonage automatique de VM en quelques secondes), depuis une VM control node dédiée (`gummi-ship`)
-- 🚧 En cours : Ansible (configuration post-provisioning), HTTPS pour Pelican/Wings (accès géré via Tailscale pour l'instant)
+- ✅ Provisioning automatisé : Terraform (template cloud-init + clonage automatique) + Ansible (premier playbook Docker, idempotent et validé) depuis la VM control node `gummi-ship`
+- 🚧 En cours : playbook Ansible pour le cluster k8s, HTTPS pour Pelican/Wings
 
-## Architecture visée
+## Architecture actuelle
+
 ```
-Serveur physique (traverse-town)
-└── Proxmox VE (hyperviseur) — 192.168.1.201
-      ├── VM master : Ubuntu Server → Kubernetes via kubeadm — 192.168.1.202
-      ├── VM worker1 : Ubuntu Server → Kubernetes via kubeadm — 192.168.1.203
-      └── VM worker2 : Ubuntu Server → Kubernetes via kubeadm — 192.168.1.204
-            └── CI/CD (Gitea + ArgoCD)
-            └── Observabilité (Prometheus + Grafana + Loki)
+Serveur physique (traverse-town) — 192.168.1.201
+└── Proxmox VE (hyperviseur)
+      │
+      ├── Cluster Kubernetes (kubeadm)
+      │     ├── destiny-islands  : control plane — 192.168.1.202
+      │     ├── radiant-garden   : worker         — 192.168.1.203
+      │     └── twilight-town    : worker         — 192.168.1.204
+      │           └── ArgoCD, Prometheus, Grafana, Loki (répartis sur le cluster)
+      │
+      ├── gummi-workshop     : VM Docker — Gitea, Pi-hole — 192.168.1.205
+      ├── hundred-acre-wood  : VM jeux — Pelican, Wings, Minecraft — 192.168.1.206
+      └── gummi-ship         : VM control node — Terraform, Ansible — 192.168.1.207
 ```
 
 Voir [docs/architecture.md](docs/architecture.md) pour le détail.
