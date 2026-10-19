@@ -97,6 +97,22 @@ Une CA auto-signée (`internal-ca-issuer`) génère les certificats HTTPS pour l
 
 Les services exposés publiquement plus tard (site, serveur de jeu) utiliseront Let's Encrypt en parallèle — les deux CA coexistent sans conflit, chacune sur son périmètre.
 
+## Démarrage automatique des VMs
+
+| VM | Rôle | Ordre |
+|---|---|---|
+| gummi-workshop | Pi-hole, Gitea, runner CI | 1 |
+| destiny-islands | Master K8s | 2 (délai le plus long, pour que l'API soit prête) |
+| radiant-garden | Worker K8s | 3 |
+| twilight-town | Worker K8s | 4 |
+| hundred-acre-wood | Pelican / Wings / Minecraft | 5 |
+| gummi-ship | Control node (Ansible, Tailscale) | 6 |
+
+À l'arrêt, l'ordre est automatiquement inversé par Proxmox.
+
+## Point de vigilance DNS
+Les VMs issues du template cloud-init pointent par défaut vers un DNS public plutôt que le Pi-hole local, et ne résolvent donc pas les noms `.home` tant que ce n'est pas corrigé manuellement. Correction à appliquer systématiquement sur toute nouvelle VM clonée (sauf celle qui héberge Pi-hole elle-même).
+
 ## Notes / galères rencontrées
 
 - **Connexion Ethernet obligatoire** : Proxmox ne gère pas le WiFi par défaut, contrairement à un live Linux classique — piège classique de débutant.
