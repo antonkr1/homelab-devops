@@ -1,6 +1,6 @@
 # ADR NNNN — Titre de la décision
 
-**Statut** : proposé / accepté / remplacé par ADR-XXXX
+**Statut** : proposé / accepté / remplacé par XXX
 **Date** : AAAA-MM-JJ
 
 ## Contexte

@@ -1,4 +1,5 @@
 ---
+
 - name: Démarrage automatique des VMs
   hosts: proxmox
   gather_facts: false

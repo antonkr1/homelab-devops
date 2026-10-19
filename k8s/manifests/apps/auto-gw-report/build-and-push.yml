@@ -1,6 +1,4 @@
 # Copie de référence — le fichier réellement utilisé se trouve dans le repo Gitea
-# (.gitea/workflows/build-and-push.yml), pas exécuté depuis ici.
-
 
 name: Build and Push Docker Image
 

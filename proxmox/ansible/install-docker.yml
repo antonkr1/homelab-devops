@@ -1,4 +1,5 @@
 ---
+
 - name: Installer Docker
   hosts: docker_hosts
   become: true
@@ -8,7 +9,7 @@
       apt:
         update_cache: true
 
-    - name: Mettre à jour les paquets existants
+    - name: Mettre à jour les paquets
       apt:
         upgrade: dist
 

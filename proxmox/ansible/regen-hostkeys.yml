@@ -1,4 +1,5 @@
 ---
+
 - name: Régénérer les clés d'hôte SSH des nœuds K8s
   hosts: k8s_cluster
   become: true

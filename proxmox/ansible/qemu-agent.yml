@@ -1,4 +1,5 @@
 ---
+
 - name: Installer qemu-guest-agent
   hosts: all:!proxmox
   become: true
