@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pomassistant
+  namespace: pomassistant
+  labels:
+    app: pomassistant
+spec:
+  type: ClusterIP
+  selector:
+    app: pomassistant
+  ports:
+    - name: http
+      port: 80            # port du Service (ce que voit l'Ingress)
+      targetPort: http    # port 8080 du conteneur (nommé "http" dans le Deployment)

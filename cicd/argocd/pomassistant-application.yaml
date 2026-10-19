@@ -1,0 +1,23 @@
+# À appliquer UNE fois : kubectl apply -f pomassistant-application.yaml
+# Ensuite ArgoCD surveille le dossier apps/pomassistant de ton repo Git.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pomassistant
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # À ADAPTER : l'URL de ton repo qui contient apps/pomassistant (repo public)
+    repoURL: https://github.com/antonkr1/homelab-devops.git
+    targetRevision: main
+    path: apps/pomassistant
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pomassistant
+  syncPolicy:
+    automated:
+      prune: true       # supprime du cluster ce qui a été retiré de Git
+      selfHeal: true    # remet l'état de Git si quelqu'un modifie le cluster à la main
+    syncOptions:
+      - CreateNamespace=true

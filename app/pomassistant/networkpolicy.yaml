@@ -1,0 +1,20 @@
+# Autoriser que le trafic venant de l'Ingress controller vers le port 8080.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-ingress
+  namespace: pomassistant
+spec:
+  podSelector:
+    matchLabels:
+      app: pomassistant
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8080

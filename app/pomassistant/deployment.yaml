@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pomassistant
+  namespace: pomassistant
+  labels:
+    app: pomassistant
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pomassistant
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: pomassistant
+    spec:
+      containers:
+        - name: web
+          # "dev" est un tag mobile : imagePullPolicy Always le re-télécharge à chaque démarrage de pod.
+          image: ghcr.io/antonkr1/pomassistant:dev
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 101          # utilisateur "nginx" de nginx-unprivileged
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault

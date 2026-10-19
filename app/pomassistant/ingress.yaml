@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pomassistant
+  namespace: pomassistant
+  annotations:
+    cert-manager.io/cluster-issuer: internal-ca-issuer
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - pom.home
+      secretName: pomassistant-tls
+  rules:
+    - host: pom.home
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pomassistant
+                port:
+                  name: http
