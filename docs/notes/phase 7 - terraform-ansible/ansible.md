@@ -17,7 +17,7 @@ Reproduit en automatisé les étapes faites manuellement en début de projet sur
 
 **SSH entre gummi-ship et les VMs cibles** : nécessite la clé SSH de `gummi-ship` copiée sur chaque VM cible. Pour les nœuds où l'authentification par mot de passe est désactivée (cluster K8s), ajout manuel de la clé publique dans `authorized_keys`.
 
-**Timeout sudo** (`Timeout waiting for privilege escalation prompt`) : le mécanisme `become` d'Ansible échouait de façon reproductible sur `hundred-acre-wood` et `gummi-workshop`, malgré un sudo fonctionnel en usage manuel direct — cause exacte non isolée avec certitude (probable souci de parsing de l'imbrication de commandes sur ces hosts précis). Résolu en configurant un accès sudo sans mot de passe pour l'utilisateur, via un fichier dédié dans `/etc/sudoers.d/` — pratique standard recommandée pour des hosts gérés par automatisation, afin d'éviter qu'un pipeline reste bloqué à attendre une saisie humaine. Reste permissif par nature, acceptable ici car l'accès est déjà restreint par clé SSH ; à affiner sur des commandes précises dans un contexte plus sensible.
+**Timeout sudo** (`Timeout waiting for privilege escalation prompt`) : causé par un bug de `sudo-rs` (la réimplémentation Rust de sudo désormais utilisée par défaut sur les versions récentes d'Ubuntu), pas un souci de configuration Ansible. Résolu en configurant un accès sudo sans mot de passe pour l'utilisateur, via un fichier dédié dans `/etc/sudoers.d/` — contournement du bug en plus d'être une pratique standard recommandée pour des hosts gérés par automatisation.
 
 ## Résultat validé
 ```

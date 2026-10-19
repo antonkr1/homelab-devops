@@ -63,11 +63,29 @@
 - [x] Template cloud-init Ubuntu 24.04 créé (VM ID 9000)
 - [x] Premier clonage automatisé validé (IP + clé SSH injectées automatiquement)
 - [x] Premier playbook Ansible (install-docker.yml) — testé et idempotent sur gummi-workshop et hundred-acre-wood
-- [ ] Playbook Ansible pour le cluster k8s_cluster (containerd, kubeadm, kubelet, kubectl)
+- [x] Playbook Ansible pour le cluster k8s_cluster (containerd, kubeadm, kubelet, kubectl)
+
+## Exploitation & résilience
+- [x] Diagnostic d'un arrêt inexpliqué (coupure brutale volontaire, aucune panne matérielle)
+- [x] Arrêt propre de toute l'infra (`shutdown-all.yml`, validé)
+- [x] Démarrage automatique ordonné des VMs (`onboot-vms.yml`, validé après arrêt/rallumage complet)
+- [x] Clé SSH du PC fixe autorisée sur les 5 VMs (`add-pc-key.yml`)
+- [x] Clés d'hôte SSH régénérées sur les 3 nœuds K8s
+- [x] DNS Pi-hole sur master, workers et hundred-acre-wood (gummi-workshop exclue volontairement)
+- [x] `/etc/hosts` hérité des clones corrigé sur les 6 machines
+- [x] `terraform-minimal` ne démarre plus seule (`on_boot = false`)
+- [ ] Arrêt/démarrage complet des VMs pour activer l'agent QEMU (installé, activé côté Proxmox)
+- [ ] BIOS : « Restore on AC Power Loss » = Power On
+- [ ] Template Terraform / cloud-init : supprimer les clés d'hôte SSH, corriger `/etc/hosts` et le DNS au premier démarrage
+- [ ] Playbook de contrôle de `/etc/hosts` (`lineinfile`)
+- [ ] Clés Vault dans un gestionnaire de mots de passe, puis étudier l'auto-unseal
+- [ ] Commiter les playbooks dans le dépôt
+- [ ] Optionnel : onduleur (UPS)
+- [ ] Reprise de l'hébergement de PoMAssistant (CI/CD Jenkins ou GitHub Actions ; RAM : 28 Go alloués sur 32 Go)
 
 ## Bonus / idées futures
 - [ ] Héberger un vrai service utile (Nextcloud, Pi-hole, Jellyfin)
 - [ ] Ansible pour automatiser le provisioning complet
-- [ ] Terraform pour la gestion des VMs Proxmox
+- [x] Terraform pour la gestion des VMs Proxmox
 - [ ] Explorer Talos Linux en remplacement d'Ubuntu Server
 - [ ] Explorer k3s en comparaison, une fois kubeadm maîtrisé (comprendre ce que k3s automatise concrètement)

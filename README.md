@@ -14,7 +14,7 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 - ✅ Serveur Minecraft (Pelican + Wings) accessible en local et depuis l'extérieur, sans port à préciser (nom de domaine + SRV)
 - ✅ Provisioning automatisé : Terraform opérationnel (template cloud-init + clonage automatique de VM en quelques secondes), depuis une VM control node dédiée (`gummi-ship`)
 - ✅ Provisioning automatisé : Terraform (template cloud-init + clonage automatique) + Ansible (premier playbook Docker, idempotent et validé) depuis la VM control node `gummi-ship`
-- 🚧 En cours : playbook Ansible pour le cluster k8s, HTTPS pour Pelican/Wings
+- ✅ Exploitation fiabilisée : arrêt propre et démarrage ordonné automatisés (Ansible), accès SSH par clé sur toutes les VMs, DNS interne en place
 
 ## Architecture actuelle
 

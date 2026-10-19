@@ -22,12 +22,33 @@ Box internet (Freebox)
 
 | Machine | IP | Rôle |
 |---|---|---|
-| traverse-town | 192.168.1.201 | Hyperviseur (Proxmox VE) |
-| destiny-islands | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
-| radiant-garden | 192.168.1.203 | Nœud worker Kubernetes |
-| twilight-town | 192.168.1.204 | Nœud worker Kubernetes |
-| gummi-workshop | 192.168.1.205 | VM Docker (conteneurisation) |
-| Réservé futurs services | 192.168.1.206 – 210 | — |
+| traverse-town | 192.168.1.201 (Tailscale 100.69.175.18) | Hôte Proxmox VE |
+| destiny-islands | 192.168.1.202 | Master Kubernetes (control-plane) |
+| radiant-garden | 192.168.1.203 | Worker K8s 1 |
+| twilight-town | 192.168.1.204 | Worker K8s 2 |
+| gummi-workshop | 192.168.1.205 | VM Docker : Pi-hole (DNS), Gitea, runner CI |
+| hundred-acre-wood | 192.168.1.206 | Pelican Panel + Wings + serveur Minecraft |
+| gummi-ship | 192.168.1.207 | Control node : Ansible, Terraform, subnet router Tailscale |
+| terraform-minimal | 192.168.1.210 | VM de test Terraform, actuellement éteinte, hors inventaire |
+| ubuntu-cloud-template | ID Proxmox 9000 | Template cloud-init Ubuntu 24.04 |
+
+Passerelle : `192.168.1.254` (correction — pas `.1`). DNS interne : Pi-hole sur `192.168.1.205`.
+
+## Accès distant — Tailscale (subnet router)
+
+En plus de l'accès direct à l'hôte Proxmox, `gummi-ship` fait office de **subnet router** : il annonce la route `192.168.1.0/24` sur le tailnet, ce qui rend tout le réseau local joignable depuis n'importe quel appareil connecté à Tailscale, pas seulement les machines ayant Tailscale installé dessus.
+
+Points clés :
+- Une route annoncée reste **« Awaiting Approval »** (donc inactive) tant qu'elle n'est pas approuvée manuellement dans la console d'admin Tailscale.
+- Un réseau extérieur utilisant aussi `192.168.1.x` peut détourner le trafic hors du tunnel Tailscale — à tester en coupant le WiFi et en passant en 4G si un accès distant semble ne pas passer par le bon chemin.
+- Les adresses `100.x.x.x` attribuées par Tailscale appartiennent à la plage CGNAT `100.64.0.0/10`, un `/32` par appareil.
+- Noms `.home` résolus à distance via Tailscale : pas encore en place (piste identifiée : Split DNS Tailscale vers le Pi-hole).
+
+## Sécurité SSH
+
+SSH par clé uniquement (mots de passe désactivés) sur : `destiny-islands`, `radiant-garden`, `twilight-town`, `gummi-workshop`, `hundred-acre-wood` (via playbook Ansible), et `gummi-ship` (configuré à la main). Proxmox est en clé seule depuis le début du projet.
+
+Prérequis commun à l'automatisation : `/etc/sudoers.d/anton-nopasswd` sur les VMs gérées par Ansible (contournement du bug `sudo-rs`, voir notes Ansible).
 
 ## Accès à l'interface Proxmox
 
