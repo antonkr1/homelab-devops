@@ -1,0 +1,12 @@
+---
+
+- name: Autoriser la clé de mon PC fixe dans authorized_keys sur tous les noeuds du cluster
+  hosts: all:!control
+  become: true
+
+  tasks:
+    - name: Ajouter la clé du PC dans authorized_keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ lookup('file', '~/pc.pub') }}"

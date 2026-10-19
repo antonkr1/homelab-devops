@@ -1,0 +1,69 @@
+---
+# Extinction propre du homelab
+# Ordre : workers K8s -> master K8s -> VMs Docker -> Proxmox
+# Rien ne s'eteint sans : -e confirm=oui
+
+- name: Verification
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Rappel si pas de confirmation
+      ansible.builtin.debug:
+        msg: "Rien ne sera eteint. Relance avec -e confirm=oui"
+      when: confirm | default('non') != 'oui'
+
+- name: Eteindre les workers Kubernetes
+  hosts: k8s_cluster:!destiny-islands
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Extinction
+      ansible.builtin.shell: sleep 2 && systemctl poweroff
+      async: 1
+      poll: 0
+      ignore_unreachable: true
+      when: confirm | default('non') == 'oui'
+
+- name: Laisser le temps aux workers
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Pause de 30 secondes
+      ansible.builtin.pause:
+        seconds: 30
+      when: confirm | default('non') == 'oui'
+
+- name: Eteindre le master Kubernetes
+  hosts: destiny-islands
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Extinction
+      ansible.builtin.shell: sleep 2 && systemctl poweroff
+      async: 1
+      poll: 0
+      ignore_unreachable: true
+      when: confirm | default('non') == 'oui'
+
+- name: Eteindre les VMs Docker
+  hosts: docker_hosts
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Extinction
+      ansible.builtin.shell: sleep 2 && systemctl poweroff
+      async: 1
+      poll: 0
+      ignore_unreachable: true
+      when: confirm | default('non') == 'oui'
+
+- name: Eteindre Proxmox (qui arrete aussi gummi-ship)
+  hosts: proxmox
+  gather_facts: false
+  tags: proxmox
+  tasks:
+    - name: Extinction dans 1 minute
+      ansible.builtin.command: shutdown -h +1 "Extinction du homelab"
+      when: confirm | default('non') == 'oui'

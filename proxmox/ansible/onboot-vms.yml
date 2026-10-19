@@ -1,0 +1,29 @@
+---
+- name: Démarrage automatique des VMs
+  hosts: proxmox
+  gather_facts: false
+
+  vars:
+    vms:
+      - { id: 100, startup: "order=1,up=30" }   # gummi-workshop (Pi-hole, Gitea)
+      - { id: 101, startup: "order=2,up=60" }   # destiny-islands (master)
+      - { id: 102, startup: "order=3,up=20" }   # radiant-garden
+      - { id: 103, startup: "order=4,up=30" }   # twilight-town
+      - { id: 104, startup: "order=5,up=20" }   # hundred-acre-wood
+      - { id: 105, startup: "order=6" }         # gummi-ship
+
+  tasks:
+    - name: Lire la config actuelle de chaque VM
+      ansible.builtin.command: "qm config {{ item.id }}"
+      loop: "{{ vms }}"
+      register: current
+      changed_when: false
+
+    - name: Appliquer onboot et startup si différents
+      ansible.builtin.command: "qm set {{ item.item.id }} --onboot 1 --startup {{ item.item.startup }}"
+      loop: "{{ current.results }}"
+      loop_control:
+        label: "VM {{ item.item.id }}"
+      when: >
+        ('onboot: 1' not in item.stdout) or
+        (('startup: ' ~ item.item.startup) not in item.stdout)
