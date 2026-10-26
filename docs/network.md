@@ -5,7 +5,6 @@
 Box internet (Freebox)
     └── Switch TP-Link TL-SG105
         └── Boîtier CPL n°1
-    ⚡ liaison courant porteur (inter-étages) ⚡
         └── Boîtier CPL n°2
             └── Serveur Proxmox (traverse-town)
 ```
