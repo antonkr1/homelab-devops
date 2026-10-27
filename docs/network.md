@@ -69,9 +69,9 @@ Un VPN Tailscale est installé directement sur l'hôte Proxmox pour permettre l'
 
 | Service | Adresse | Statut |
 |---|---|---|
-| Ingress HTTP | `http://192.168.1.202:30153` (ou `.203`/`.204`, NodePort identique sur les 3 nœuds) | ✅ fonctionnel |
-| Ingress HTTPS | `https://192.168.1.202:31850` | ⏳ déployé, pas encore configuré |
-| App de test (`auto-gw-report`) | via Ingress HTTP ci-dessus | ✅ validée de bout en bout |
+| Ingress HTTP | `http://192.168.1.202:30153` (ou `.203`/`.204`, NodePort identique sur les 3 nœuds) | fonctionnel |
+| Ingress HTTPS | `https://192.168.1.202:31850` | déployé, pas encore configuré |
+| App de test (`auto-gw-report`) | via Ingress HTTP ci-dessus | validée de bout en bout |
 
 Accès actuel via IP + port brut — un DNS local (Pi-hole) est prévu pour remplacer ça par un nom de domaine interne cohérent avec le thème du homelab (ex: `auto-gw-report.traverse-town.local`).
 
