@@ -1,4 +1,3 @@
-# À appliquer UNE fois : kubectl apply -f argocd/metallb-config.yaml
 # Déploie la plage d'adresses depuis apps/metallb-config de ton dépôt.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -19,7 +18,6 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      # Les CRD de MetalLB n'existent pas tant que l'application "metallb" n'est pas installée
       - SkipDryRunOnMissingResource=true
     retry:
       limit: 10
