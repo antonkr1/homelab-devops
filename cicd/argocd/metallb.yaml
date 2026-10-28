@@ -1,0 +1,27 @@
+# À appliquer UNE fois : kubectl apply -f argocd/metallb.yaml
+# Installe MetalLB depuis son chart Helm officiel (version épinglée).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://metallb.github.io/metallb
+    chart: metallb
+    targetRevision: 0.15.2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true        # les CRD de MetalLB sont volumineux
+    managedNamespaceMetadata:
+      labels:
+        # Le "speaker" de MetalLB a besoin de droits réseau étendus
+        pod-security.kubernetes.io/enforce: privileged
