@@ -1,7 +1,3 @@
-# Export de la définition Application ArgoCD pour auto-gw-report
-# Généré via : kubectl get application auto-gw-report -n argocd -o yaml
-# Date : 15/09/2026
-#
 # Ce fichier est une COPIE À TITRE DE DOCUMENTATION/RÉFÉRENCE.
 
 
