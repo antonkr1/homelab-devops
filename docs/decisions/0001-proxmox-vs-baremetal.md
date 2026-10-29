@@ -1,8 +1,5 @@
 # ADR 0001 — Proxmox VE plutôt que k8s bare-metal
 
-**Statut** : accepté
-**Date** : 2026-08-04
-
 ## Contexte
 
 Une seule machine physique disponible (i5-9600KF, 16-32 Go RAM). Objectif : apprendre Kubernetes dans des conditions proches d'un vrai environnement distribué, pas juste un cluster single-node.
