@@ -29,7 +29,7 @@ Serveur physique (traverse-town) — 192.168.1.201
       │           └── ArgoCD, Prometheus, Grafana, Loki (répartis sur le cluster)
       │
       ├── gummi-workshop     : VM Docker — Gitea, Pi-hole — 192.168.1.205
-      ├── hundred-acre-wood  : VM jeux — Pelican, Wings, Minecraft — 192.168.1.206
+      ├── hundred-acre-wood  : VM jeux — Pelican, Wings — 192.168.1.206
       └── gummi-ship         : VM control node — Terraform, Ansible — 192.168.1.207
 ```
 
