@@ -8,13 +8,13 @@ Monter un homelab complet, du matériel jusqu'à un cluster Kubernetes en produc
 
 ## Statut actuel
 
-🚧 En cours — Phases 1 à 5 terminées, projets annexes (Minecraft, provisioning automatisé) en cours
+Infrastructure opérationnelle : Proxmox, cluster Kubernetes (kubeadm) à 3 nœuds,
+GitOps avec ArgoCD, observabilité, PKI interne, accès distant par Tailscale.
 
-- ✅ Infrastructure complète : Proxmox, cluster Kubernetes 3 nœuds, CI/CD GitOps, observabilité, sécurité (voir ROADMAP.md pour le détail par phase)
-- ✅ Serveur Minecraft (Pelican + Wings) accessible en local et depuis l'extérieur, sans port à préciser (nom de domaine + SRV)
-- ✅ Provisioning automatisé : Terraform opérationnel (template cloud-init + clonage automatique de VM en quelques secondes), depuis une VM control node dédiée (`gummi-ship`)
-- ✅ Provisioning automatisé : Terraform (template cloud-init + clonage automatique) + Ansible (premier playbook Docker, idempotent et validé) depuis la VM control node `gummi-ship`
-- ✅ Exploitation fiabilisée : arrêt propre et démarrage ordonné automatisés (Ansible), accès SSH par clé sur toutes les VMs, DNS interne en place
+Application déployée : **PoMAssistant** (Vue 3 / Supabase), servie en HTTPS sur le réseau
+local et via Tailscale. Chaîne : GitHub Actions → GHCR → ArgoCD.
+
+Voir [ROADMAP.md](ROADMAP.md) pour le détail des phases.
 
 ## Architecture actuelle
 
@@ -51,22 +51,26 @@ Voir [ROADMAP.md](ROADMAP.md) pour le détail des phases et l'avancement.
 
 Chaque choix technique important (Proxmox vs bare-metal, kubeadm vs k3s, etc.) est documenté dans [docs/decisions/](docs/decisions/) au format ADR (Architecture Decision Record).
 
-## Structure du repo
+## Structure du dépôt
 
-```
-.
-├── .gitea/workflows/      # Pipelines CI (Gitea Actions)
+homelab-devops/
+├── apps/                    # Manifests déployés par ArgoCD (un dossier = une Application)
+│   ├── pomassistant/        #   Deployment, Service, Ingress, NetworkPolicy
+│   ├── metallb-config/      #   Pool d'IP
+│   ├── monitoring-ingress/  #   Ingress Grafana
+│   └── argocd-ingress/      #   Ingress ArgoCD
+├── cicd/
+│   └── argocd/              # Applications ArgoCD (appliquées une fois avec kubectl apply)
+├── terraform/               # Provisionnement des VMs Proxmox
+├── proxmox/ansible/         # Playbooks : Docker, arrêt/démarrage, clés SSH
 ├── docs/
-│   ├── decisions/         # ADR — décisions d'architecture structurantes
-│   └── notes/             # Notes techniques et journal de bord par sujet
-├── backups/config/        # Snapshots de configuration par hôte
-├── proxmox/               # Scripts/configs pour l'hyperviseur
-├── k8s/manifests/         # Manifests Kubernetes (apps, ingress, storage, cert-manager)
-├── docker/                # Dockerfiles et docker-compose des applis
-├── cicd/argocd/           # Manifestes ArgoCD (Application, config repo)
-├── terraform/             # Configuration Terraform (provisioning VMs)
-└── monitoring/            # Configuration Prometheus, Grafana, Loki
-```
+│   ├── architecture.md
+│   ├── network.md
+│   ├── hardware-specs.md
+│   └── notes/
+├── monitoring/
+├── ROADMAP.md
+└── README.md
 
 ## Journal de bord
 

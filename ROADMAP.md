@@ -48,6 +48,17 @@
 - [ ] WireGuard natif Proxmox — approfondissement VPN une fois Tailscale déjà en place
 - [x] 2FA sur l'interface web Proxmox (TOTP activé sur `root@pam`)
 
+## Phase 6 — Application réelle et GitOps réseau 
+
+- [x] Hébergement de PoMAssistant : Dockerfile, CI GitHub Actions, GHCR, ArgoCD
+- [x] Environnements dev / prod côté CI
+- [x] Supabase de dev : schéma versionné, RLS, multi-tenant par guilde, connexion Discord
+- [x] MetalLB (chart Helm, GitOps) : IP stable pour l'ingress
+- [x] ingress-nginx repris sous ArgoCD (chart Helm)
+- [x] Ingress dédiés Grafana et ArgoCD
+- [x] Réparation du cluster (CRD ApplicationSet, datasources Grafana, pods orphelins)
+- [x] Dépôt passé en public (analyse de l'historique, scan des secrets)
+
 ## Pelican / Minecraft
 - [x] VM dédiée hundred-acre-wood créée (192.168.1.206) — isolée du reste pour un service exposé publiquement
 - [x] Panel Pelican + Wings installés en docker-compose (K8s abandonné — bug connu/documenté de Pelican avec l'installateur web)
@@ -81,11 +92,19 @@
 - [ ] Clés Vault dans un gestionnaire de mots de passe, puis étudier l'auto-unseal
 - [ ] Commiter les playbooks dans le dépôt
 - [ ] Optionnel : onduleur (UPS)
-- [ ] Reprise de l'hébergement de PoMAssistant (CI/CD Jenkins ou GitHub Actions ; RAM : 28 Go alloués sur 32 Go)
+
+## Reste à faire
+
+- [ ] **Sécurité** : révoquer les anciens tokens, changer les mots de passe (Supabase dev, Grafana), sauvegarder hors cluster les clés Vault
+- [ ] **GitOps** : app of apps, ArgoCD sous GitOps
+- [ ] **Ingress** : migrer hors d'ingress-nginx (projet retiré en mars 2026)
+- [ ] **Cluster** : metrics-server, correctif Loki dans les valeurs Helm
+- [ ] **Application** : tag d'image par commit, environnement prod
+- [ ] Test de `pom.home` depuis l'extérieur via Tailscale
 
 ## Bonus / idées futures
-- [ ] Héberger un vrai service utile (Nextcloud, Pi-hole, Jellyfin)
 - [ ] Ansible pour automatiser le provisioning complet
 - [x] Terraform pour la gestion des VMs Proxmox
 - [ ] Explorer Talos Linux en remplacement d'Ubuntu Server
 - [ ] Explorer k3s en comparaison, une fois kubeadm maîtrisé (comprendre ce que k3s automatise concrètement)
+
