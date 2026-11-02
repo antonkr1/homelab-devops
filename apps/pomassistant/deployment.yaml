@@ -22,9 +22,10 @@ spec:
     spec:
       containers:
         - name: web
-          # "dev" est un tag mobile : imagePullPolicy Always le re-télécharge à chaque démarrage de pod.
+          # Image construite par GitHub Actions (branche dev).
+          # Le tag est mis à jour automatiquement par le pipeline (commit dans ce dépôt).
           image: ghcr.io/antonkr1/pomassistant:dev
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
@@ -49,7 +50,7 @@ spec:
               memory: 128Mi
           securityContext:
             runAsNonRoot: true
-            runAsUser: 101          # utilisateur "nginx" de nginx-unprivileged
+            runAsUser: 101          # utilisateur "nginx" de l'image nginx-unprivileged
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
