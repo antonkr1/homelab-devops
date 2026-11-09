@@ -28,7 +28,7 @@ Serveur physique (traverse-town) — 192.168.1.201
       │     └── twilight-town    : worker         — 192.168.1.204
       │           └── ArgoCD, Prometheus, Grafana, Loki (répartis sur le cluster)
       │
-      ├── gummi-workshop     : VM Docker — Gitea, Pi-hole — 192.168.1.205
+      ├── gummi-workshop     : VM Docker — Pi-hole — 192.168.1.205
       ├── hundred-acre-wood  : VM jeux — Pelican, Wings — 192.168.1.206
       └── gummi-ship         : VM control node — Terraform, Ansible — 192.168.1.207
 ```
@@ -53,24 +53,24 @@ Chaque choix technique important (Proxmox vs bare-metal, kubeadm vs k3s, etc.) e
 
 ## Structure du dépôt
 
+```
 homelab-devops/
 ├── apps/                    # Manifests déployés par ArgoCD (un dossier = une Application)
-│   ├── pomassistant/        #   Deployment, Service, Ingress, NetworkPolicy
-│   ├── metallb-config/      #   Pool d'IP
-│   ├── monitoring-ingress/  #   Ingress Grafana
-│   └── argocd-ingress/      #   Ingress ArgoCD
-├── cicd/
-│   └── argocd/              # Applications ArgoCD (appliquées une fois avec kubectl apply)
-├── terraform/               # Provisionnement des VMs Proxmox
-├── proxmox/ansible/         # Playbooks : Docker, arrêt/démarrage, clés SSH
+│   ├── pomassistant/
+│   ├── metallb-config/
+│   ├── monitoring-ingress/
+│   └── argocd-ingress/
+├── cicd/argocd/             # Applications ArgoCD (kubectl apply, une seule fois)
+├── k8s/cert-manager/        # ClusterIssuer (CA interne)
+├── proxmox/
+│   ├── terraform/           # Provisionnement des VMs
+│   └── ansible/             # Docker, arrêt/démarrage, clés SSH, qemu-agent
 ├── docs/
-│   ├── architecture.md
-│   ├── network.md
-│   ├── hardware-specs.md
-│   └── notes/
-├── monitoring/
+│   ├── architecture.md, network.md, hardware-specs.md
+│   └── notes/               # Notes par phase
 ├── ROADMAP.md
 └── README.md
+```
 
 ## Journal de bord
 

@@ -8,7 +8,7 @@
    │ i5-9600KF · 32 Go RAM · SSD 1To             │
    │ hostname: traverse-town                     │
    └──────────────────────┬──────────────────────┘
-                        │
+                          │
             ┌─────────────▼────────────┐
             │ Proxmox VE (hyperviseur) │
             │ 192.168.1.201            │
@@ -51,7 +51,7 @@ Depuis l'extérieur : Tailscale → subnet router `gummi-ship` → même chemin.
 
 ## Couches applicatives sur le cluster Kubernetes
 
-- **CI/CD** : GitHub Actions → GHCR → ArgoCD (GitOps, sur le cluster). ArgoCD surveille le dossier `apps/<nom>` de ce dépôt.
+- **CI/CD** : GitHub Actions → GHCR → ArgoCD (GitOps). Contrôles automatiques sur chaque PR, tag d'image immuable, commit GitOps dans ce dépôt.
 - **Réseau cluster** : MetalLB (pool `192.168.1.230 – 240`, mode L2) donne l'IP `192.168.1.230` à ingress-nginx.
 - **DNS local** : Pi-hole (sur `gummi-workshop`), résolution des `.home` ; split DNS Tailscale pour y accéder à distance.
 - **Observabilité** : Prometheus + Grafana (Helm, namespace `monitoring`) + Loki/Promtail (Helm, même namespace). Grafana est accessible sur `https://grafana.home`.
@@ -66,10 +66,14 @@ Depuis l'extérieur : Tailscale → subnet router `gummi-ship` → même chemin.
 ## Flux GitOps
 
 ```
-Push sur main ou dev (GitHub)
-   → GitHub Actions : build de l'image Docker + push sur GHCR
-   → ArgoCD détecte le changement dans apps/<nom> (polling ~3 min, ou refresh manuel)
-   → Synchronisation automatique sur le cluster
+Pull request vers main ou dev
+   → GitHub Actions : scan du code, tests, build sans publication, scan de l'image
+
+Push sur main ou dev
+   → GitHub Actions : build + publication sur GHCR (tag immuable AAAAMMJJ-HHMM-<sha>)
+   → commit GitOps dans apps/pomassistant (nouveau tag), déploiement seulement pour dev
+   → ArgoCD détecte le changement (polling ~3 min, ou refresh manuel)
+   → Synchronisation en mise à jour progressive sur le cluster
 ```
 
 Applications gérées par ArgoCD :
@@ -81,6 +85,6 @@ Applications gérées par ArgoCD :
 | metallb-config | `apps/metallb-config` | Pool d'IP, mode L2 |
 | ingress-nginx | chart Helm 4.15.1 | Contrôleur d'ingress |
 | monitoring-ingress | `apps/monitoring-ingress` | Accès Grafana |
-| argocd-ingress | `apps/argocd-ingress` | Accès ArgoCD |
+| argocd-ingress | `apps/argocd-ingress` | Accès ArgoCD (à finir : host non défini) |
 
 Les `Application` sont définies dans `cicd/argocd/` et appliquées une fois avec `kubectl apply`.

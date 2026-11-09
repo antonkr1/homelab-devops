@@ -6,7 +6,7 @@
 
   vars:
     vms:
-      - { id: 100, startup: "order=1,up=30" }   # gummi-workshop (Pi-hole, Gitea)
+      - { id: 100, startup: "order=1,up=30" }   # gummi-workshop (Pi-hole)
       - { id: 101, startup: "order=2,up=60" }   # destiny-islands (master)
       - { id: 102, startup: "order=3,up=20" }   # radiant-garden
       - { id: 103, startup: "order=4,up=30" }   # twilight-town
