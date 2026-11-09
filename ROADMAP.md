@@ -90,21 +90,21 @@
 - [ ] Template Terraform / cloud-init : supprimer les clés d'hôte SSH, corriger `/etc/hosts` et le DNS au premier démarrage
 - [ ] Playbook de contrôle de `/etc/hosts` (`lineinfile`)
 - [ ] Clés Vault dans un gestionnaire de mots de passe, puis étudier l'auto-unseal
-- [ ] Commiter les playbooks dans le dépôt
+- [x] Commiter les playbooks dans le dépôt
 - [ ] Optionnel : onduleur (UPS)
 
 ## Reste à faire
 
 - [ ] **Sécurité** : révoquer les anciens tokens, changer les mots de passe (Supabase dev, Grafana), sauvegarder hors cluster les clés Vault
 - [ ] **GitOps** : app of apps, ArgoCD sous GitOps
-- [ ] **Ingress** : migrer hors d'ingress-nginx (projet retiré en mars 2026)
+- [ ] **Ingress** : migrer hors d'ingress-nginx (projet plus mis à jour depuis mars 2026)
 - [ ] **Cluster** : metrics-server, correctif Loki dans les valeurs Helm
 - [ ] **Application** : tag d'image par commit, environnement prod
 - [ ] Test de `pom.home` depuis l'extérieur via Tailscale
 
 ## Bonus / idées futures
-- [ ] Ansible pour automatiser le provisioning complet
+- [x] Ansible pour automatiser le provisioning complet
 - [x] Terraform pour la gestion des VMs Proxmox
 - [ ] Explorer Talos Linux en remplacement d'Ubuntu Server
-- [ ] Explorer k3s en comparaison, une fois kubeadm maîtrisé (comprendre ce que k3s automatise concrètement)
+- [ ] Explorer k3s en comparaison, une fois kubeadm maîtrisé
 
