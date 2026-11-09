@@ -45,7 +45,12 @@ Voir [docs/network.md](docs/network.md) pour la topologie réseau (CPL, plages I
 
 ## Roadmap
 
-Voir [ROADMAP.md](ROADMAP.md) pour le détail des phases et l'avancement.
+## Roadmaps
+
+Le projet avance sur deux axes, chacun avec sa roadmap :
+
+- [ROADMAP.md](ROADMAP.md) : l'infrastructure (Proxmox, Kubernetes, réseau, automatisation, observabilité, sécurité).
+- [docs/roadmap-pomassistant.md](docs/roadmap-pomassistant.md) : le projet PoMAssistant, c'est-à-dire l'hébergement d'une application réelle avec une chaîne CI/CD de bout en bout, sécurisée et supervisée.
 
 ## Décisions techniques
 
@@ -67,6 +72,7 @@ homelab-devops/
 │   └── ansible/             # Docker, arrêt/démarrage, clés SSH, qemu-agent
 ├── docs/
 │   ├── architecture.md, network.md, hardware-specs.md
+│   ├── roadmap-pomassistant.md
 │   └── notes/               # Notes par phase
 ├── ROADMAP.md
 └── README.md

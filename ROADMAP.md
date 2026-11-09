@@ -1,3 +1,5 @@
+> Projet PoMAssistant (CI/CD et sécurité applicative) : voir [docs/roadmap-pomassistant.md](docs/roadmap-pomassistant.md).
+
 # Roadmap
 
 ## Phase 0 — Préparation matérielle
@@ -95,12 +97,15 @@
 
 ## Reste à faire
 
+<<<<<<< Updated upstream
 - [ ] **Sécurité** : révoquer les anciens tokens, changer les mots de passe (Supabase dev, Grafana), sauvegarder hors cluster les clés Vault
 - [ ] **GitOps** : app of apps, ArgoCD sous GitOps
 - [ ] **Ingress** : migrer hors d'ingress-nginx (projet plus mis à jour depuis mars 2026)
+=======
+- [ ] **GitOps** : faire passer tout les services existants sur ArgoCD
+- [ ] **Ingress** : migrer hors d'ingress-nginx (projet retiré en mars 2026)
+>>>>>>> Stashed changes
 - [ ] **Cluster** : metrics-server, correctif Loki dans les valeurs Helm
-- [ ] **Application** : tag d'image par commit, environnement prod
-- [ ] Test de `pom.home` depuis l'extérieur via Tailscale
 
 ## Bonus / idées futures
 - [x] Ansible pour automatiser le provisioning complet
