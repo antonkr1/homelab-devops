@@ -11,13 +11,13 @@ Box internet (Freebox)
 ```
 
 ## Plages IP
-
+```
 | Plage | Usage |
 
 | 192.168.1.1 – 192.168.1.200 | DHCP (box, appareils du quotidien) |
 | 192.168.1.201 – 192.168.1.253 | Réservée aux IP fixes du homelab |
 | 192.168.1.254 | Gateway de la box |
-
+```
 ## Adressage du homelab
 
 | Machine | IP | Rôle |
