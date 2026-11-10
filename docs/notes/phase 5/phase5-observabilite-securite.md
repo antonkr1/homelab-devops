@@ -1,8 +1,6 @@
-> Une partie des tests décrits ici a été faite sur `auto-gw-report`, application retirée depuis.
+> Une partie des tests décrits ici a été faite sur `auto-gw-report`, application test retirée depuis.
 
 # Notes — Phase 5 : Observabilité & sécurité
-
-Récap technique des galères et décisions prises pendant cette phase.
 
 ## 2FA sur Proxmox
 TOTP activé sur le compte `root@pam` (application d'authentification + QR code), codes de récupération sauvegardés en lieu sûr. Referme un trou de sécurité identifié plus tôt dans le projet : l'accès web à Proxmox (shell intégré compris) équivaut à un accès root complet à l'hôte, jusque-là protégé par le seul mot de passe.
