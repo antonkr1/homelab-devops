@@ -82,9 +82,10 @@ Les services exposés publiquement plus tard (site, serveur de jeu) utiliseront 
 Control node dédié, d'où sont pilotés Ansible et Terraform vers le reste du homelab (Ansible ne tourne pas nativement sur Windows, d'où cette VM plutôt que WSL).
 
 ## Adressage — ajout
-
+```
 | gummi-ship | 192.168.1.207 | Control node Terraform/Ansible |
 | terraform-minimal (test) | 192.168.1.210 | VM de test, clonée automatiquement via Terraform |
+```
 
 ## Notes / galères rencontrées
 
