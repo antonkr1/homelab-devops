@@ -80,4 +80,4 @@ homelab-devops/
 
 ## Journal de bord
 
-Ce README et la documentation associée sont mis à jour au fil du projet, pas rédigés a posteriori — l'idée est de garder une trace fidèle des décisions et des galères rencontrées.
+Ce README et la documentation associée sont mis à jour au fil du projet, pas rédigés a posteriori, l'idée est de garder une trace fidèle de l'avancée du projet.
