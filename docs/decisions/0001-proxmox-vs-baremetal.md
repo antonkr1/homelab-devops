@@ -1,4 +1,4 @@
-# ADR 0001 — Proxmox VE plutôt que k8s bare-metal
+# ADR 0001 - Proxmox VE plutôt que k8s bare-metal
 
 ## Contexte
 
@@ -6,7 +6,7 @@ Une seule machine physique disponible (i5-9600KF, 16-32 Go RAM). Objectif : appr
 
 ## Options considérées
 
-- **Bare-metal** (k8s installé directement sur Ubuntu Server) : zéro overhead RAM/CPU, plus simple, mais un seul nœud "physique" — perd l'aspect distribué du cluster.
+- **Bare-metal** (k8s installé directement sur Ubuntu Server) : zéro overhead RAM/CPU, plus simple, mais un seul nœud "physique", perd l'aspect distribué du cluster.
 - **Proxmox VE + VMs** : permet de créer plusieurs VMs = plusieurs nœuds k8s indépendants (master + workers), simule un vrai cluster distribué. Coût : overhead RAM par VM.
 
 ## Décision
