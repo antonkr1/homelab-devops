@@ -1,6 +1,6 @@
 # Comprendre les modules d'un cluster Kubernetes
 
-Ce document explique les concepts clés rencontrés pendant le montage du cluster (Phase 3), pour garder une trace claire de ce qui se passe sous le capot au-delà des simples commandes exécutées.
+Ce document explique les concepts clés rencontrés pendant le montage du cluster (Phase 3), pour garder une trace claire de ce qui se passe.
 
 ## Prérequis système avant kubeadm
 
@@ -15,14 +15,14 @@ Kubernetes, installé "à la main" via kubeadm, impose plusieurs réglages syst�
 
 Le CIDR est simplement une **notation pour décrire une plage d'adresses IP** (ex : `10.244.0.0/16` représente toutes les adresses de `10.244.0.0` à `10.244.255.255`). Dans un cluster Kubernetes, le "pod network CIDR" définit la plage d'adresses IP **réservée aux pods**, chaque pod reçoit une IP interne au cluster, distincte des adresses IP des machines physiques/virtuelles elles-mêmes.
 
-**Pourquoi c'est sensible** : cette plage doit être **totalement disjointe** du réseau physique réel (le réseau domestique dans ce cas, `192.168.1.0/24`). Si les deux plages se chevauchent, le système ne sait plus distinguer une adresse de pod d'une adresse d'appareil réel sur le réseau local, ce qui casse le routage. C'est pour cette raison qu'on utilise une plage volontairement différente et standardisée (`10.244.0.0/16` est la valeur attendue par défaut par le CNI Calico).
+**Pourquoi c'est sensible** : cette plage doit être **totalement disjointe** du réseau physique réel (le réseau domestique dans moon cas, `192.168.1.0/24`). Si les deux plages se chevauchent, le système ne sait plus distinguer une adresse de pod d'une adresse d'appareil réel sur le réseau local, ce qui casse le routage. C'est pour cette raison qu'on utilise une plage volontairement différente et standardisée (`10.244.0.0/16` est la valeur attendue par défaut par le CNI Calico).
 
 ## Le CNI (Container Network Interface)
 
 Le CNI est le composant qui **donne vie au réseau des pods**. Sans lui :
 - Les pods n'ont pas d'adresse IP interne fonctionnelle
 - Aucun routage n'est possible entre les pods situés sur des nœuds différents
-- Le nœud reste bloqué dans un état "non prêt" (`NotReady`), même si le control plane est par ailleurs sain
+- Le nœud reste bloqué dans un état "non prêt" (`NotReady`), même si le master est sain
 
 Techniquement, un CNI est une **spécification** (une norme) que plusieurs implémentations respectent, Calico, Flannel, Cilium en sont des exemples. Une fois installé, le CNI choisi (ici Calico) déploie un **agent sur chaque nœud du cluster**, chargé de :
 - Attribuer une IP à chaque pod créé sur ce nœud, dans la plage définie par le CIDR
@@ -33,13 +33,13 @@ Le passage d'un nœud de l'état `NotReady` à `Ready` juste après l'installati
 
 ## La jointure des workers au cluster (kubeadm join)
 
-Quand le control plane est initialisé sur le master, celui-ci génère un **token temporaire** (valide 24h par défaut), une sorte de preuve d'identité à usage limité dans le temps.
+Quand le master est initialisé sur le master, celui-ci génère un **token temporaire** (valide 24h par défaut), une sorte de preuve d'identité à usage limité dans le temps.
 
 Le processus de jointure repose sur une confiance mutuelle :
 - Le **worker** présente ce token pour prouver qu'il est autorisé à rejoindre ce cluster précis (et pas n'importe quel cluster Kubernetes qui traînerait sur le réseau)
-- Le worker vérifie en retour une **empreinte cryptographique du certificat du control plane**, ça lui permet de s'assurer qu'il communique bien avec le vrai master, et pas avec un faux control plane qui usurperait son identité sur le réseau
+- Le worker vérifie en retour une **empreinte cryptographique du certificat du master**, ça lui permet de s'assurer qu'il communique bien avec le vrai master, et pas avec un faux control plane qui usurperait son identité sur le réseau
 
-Une fois la jointure réussie, le worker devient un nœud à part entière du cluster : il reçoit des instructions du control plane (créer, déplacer, supprimer des pods) et exécute les charges de travail qui lui sont assignées.
+Une fois la jointure réussie, le worker devient un nœud à part entière du cluster : il reçoit des instructions du master (créer, déplacer, supprimer des pods) et exécute les charges de travail qui lui sont assignées.
 
 **Point de logique important** : l'outil de pilotage du cluster (`kubectl`) n'est utile et configuré **que sur le master**. Les workers ne pilotent jamais le cluster eux-mêmes, ils ne font qu'exécuter ce qu'on leur demande, pas besoin d'y configurer `kubectl`.
 
