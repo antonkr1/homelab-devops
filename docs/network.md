@@ -23,7 +23,7 @@ Box internet (Freebox)
 | Machine | IP | Rôle |
 |---|---|---|
 | traverse-town | 192.168.1.201 | Hyperviseur (Proxmox VE) |
-| destiny-islands | 192.168.1.202 | Control plane Kubernetes (kubeadm) |
+| destiny-islands | 192.168.1.202 | Master Kubernetes (kubeadm) |
 | radiant-garden | 192.168.1.203 | Nœud worker Kubernetes |
 | twilight-town | 192.168.1.204 | Nœud worker Kubernetes |
 | gummi-workshop | 192.168.1.205 | VM Docker : Pi-hole (DNS) |
