@@ -1,6 +1,6 @@
 # Roadmap — PoMAssistant : CI/CD, sécurité et exploitation
 
-Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026, sur 6 mois dont 3 de travail effectif.
+Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026.
 
 La roadmap de l'infrastructure (Proxmox, Kubernetes, DNS, etc.) est dans [ROADMAP.md](../ROADMAP.md).
 
