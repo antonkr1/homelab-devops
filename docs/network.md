@@ -26,7 +26,7 @@ Box internet (Freebox)
 | destiny-islands | 192.168.1.202 | Master Kubernetes (kubeadm) |
 | radiant-garden | 192.168.1.203 | Nœud worker Kubernetes |
 | twilight-town | 192.168.1.204 | Nœud worker Kubernetes |
-| gummi-workshop | 192.168.1.205 | VM Docker : Pi-hole (DNS) |
+| gummi-workshop | 192.168.1.205 | VM Docker : Pi-hole (DNS), SonarQube |
 | hundred-acre-wood | 192.168.1.206 | Pelican (Panel + Wings), serveurs de jeux |
 | gummi-ship | 192.168.1.207 | Control node : Ansible, Terraform, subnet router Tailscale |
 | terraform-minimal | 192.168.1.210 | VM de test Terraform, éteinte, hors inventaire |
@@ -69,7 +69,7 @@ gummi-workshop.home → 192.168.1.205
 
 | Service | Adresse | Rôle |
 |---|---|---|
-| ArgoCD | https://argocd.home | Interface GitOps, Ingress à finir (host non défini) |
+| ArgoCD | https://argocd.home | Interface GitOps |
 
 ## TLS interne — cert-manager
 

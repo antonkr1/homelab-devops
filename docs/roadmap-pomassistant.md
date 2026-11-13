@@ -1,5 +1,6 @@
 # Roadmap — PoMAssistant : CI/CD, sécurité et exploitation
 
+
 Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026, sur 6 mois dont 3 de travail effectif.
 
 La roadmap de l'infrastructure (Proxmox, Kubernetes, DNS, etc.) est dans [ROADMAP.md](../ROADMAP.md).
@@ -11,6 +12,7 @@ Légende : `[x]` fait, `[~]` en cours ou partiel, `[ ]` prévu.
 ```
 Pull request vers main ou dev
    → scan du code (Trivy), tests (Vitest), construction de l'image sans publication, scan de l'image
+   → vers dev uniquement : analyse SonarQube, Quality Gate bloquant
 
 Push sur main ou dev
    → construction + publication sur GHCR (tag immuable AAAAMMJJ-HHMM-<sha court>)
@@ -18,7 +20,7 @@ Push sur main ou dev
    → ArgoCD : mise à jour progressive, 2 réplicas, sans coupure
 ```
 
-Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. SonarQube n'est pas encore dans la CI : l'analyse est lancée à la main pour le moment.
+Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. L'analyse SonarQube et la protection complète (`tests`, `image`, `sonarqube`) sont en place sur `dev` ; `main` suivra.
 
 ## État initial et cible
 
@@ -46,12 +48,14 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 - [x] Image durcie : utilisateur non root, capacités retirées, seccomp, limites de ressources, sondes
 - [x] Contrôles sur pull request (scans, tests, construction sans publication)
 - [x] Premiers tests unitaires (Vitest), job `tests` aux droits minimaux, exécuté avant la construction de l'image
-- [x] Protection de branche sur `dev` et `main` : PR obligatoire, contrôles `image` et `tests` obligatoires (blocage du bouton de fusion vérifié sur une vraie PR)
-- [ ] Activer « Do not allow bypassing the above settings » pour que la règle s'applique aussi à l'administrateur
+- [x] Protection de branche sur `dev` : PR obligatoire, contrôles `tests`, `image` et `sonarqube` obligatoires, sans contournement (blocage du bouton de fusion vérifié sur une vraie PR)
+- [ ] Étendre la même protection à `main`, une fois la chaîne stabilisée sur `dev`
 - [x] Tests des composables `useSyncPairFilters` et `useSyncPairOrder`
 - [~] Étendre les tests : compte à rebours (`useCountdown`) après extraction du calcul dans une fonction pure
 - [x] SonarQube (Community Build) installé sur `gummi-workshop` (Docker Compose, PostgreSQL) ; premier scan manuel : 5 remarques d'accessibilité, aucune vulnérabilité
-- [ ] Intégrer l'analyse statique à la CI : SonarQube (scan de la PR `dev` vers `main`, accès via Tailscale) ou CodeQL, à trancher. L'édition gratuite de SonarQube n'analyse pas les pull requests.
+- [x] SonarQube dans la CI : job `sonarqube` sur les pull requests vers `dev`, Quality Gate bloquant ; accès au serveur privé par Tailscale (identité fédérée OIDC, nœud éphémère, accès limité au seul port de SonarQube)
+- [ ] Décider du rôle de CodeQL à côté de SonarQube
+- [ ] Corriger avec l'auteur les 5 remarques d'accessibilité relevées (champs de formulaire sans étiquette)
 - [ ] Scan de l'image **avant** sa publication
 - [ ] Dependabot (dépendances et actions GitHub)
 - [ ] Rapport de scan initial et documentation dans `docs/`
@@ -71,5 +75,5 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 
 ## Suivi et points de vigilance
 
-- Jeton `GITOPS_TOKEN` (limité au dépôt d'infrastructure, expire après 90 jours) : noter sa date de création et le renouveler à temps, sinon la CI ne pourra plus déployer.
+- Jetons `GITOPS_TOKEN` (limité au dépôt d'infrastructure) et `SONAR_TOKEN` (jeton d'analyse de projet), tous deux valables 90 jours : noter leur date de création et les renouveler à temps, sinon la CI ne pourra plus déployer ni analyser.
 - Vérifier régulièrement que les pods tournent avec le dernier tag et que les runs sur `dev` sont verts.
