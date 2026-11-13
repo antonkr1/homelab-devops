@@ -62,6 +62,7 @@ Depuis l'extérieur : Tailscale → subnet router `gummi-ship` → même chemin.
   - 2FA (TOTP) sur l'interface web Proxmox
 - **Stockage** : `local-path-provisioner`, StorageClass par défaut du cluster
 - **Apps hébergées** : PoMAssistant (Vue 3 / Supabase, image sur GHCR, HTTPS via CA interne sur `https://pom.home`)
+- **Analyse statique du code** : SonarQube (Community Build, Docker Compose + PostgreSQL) sur `gummi-workshop`, hors cluster. Analyse lancée à la main pour l'instant ; intégration à la CI à l'étude.
 
 ## Flux GitOps
 
@@ -85,6 +86,6 @@ Applications gérées par ArgoCD :
 | metallb-config | `apps/metallb-config` | Pool d'IP, mode L2 |
 | ingress-nginx | chart Helm 4.15.1 | Contrôleur d'ingress |
 | monitoring-ingress | `apps/monitoring-ingress` | Accès Grafana |
-| argocd-ingress | `apps/argocd-ingress` | Accès ArgoCD (à finir : host non défini) |
+| argocd-ingress | `apps/argocd-ingress` | Accès ArgoCD |
 
 Les `Application` sont définies dans `cicd/argocd/` et appliquées une fois avec `kubectl apply`.
