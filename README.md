@@ -74,6 +74,7 @@ homelab-devops/
 │   ├── architecture.md, network.md, hardware-specs.md
 │   ├── roadmap-pomassistant.md
 │   └── notes/               # Notes par phase
+├──scripts/                  # Différents scripts bash
 ├── ROADMAP.md
 └── README.md
 ```
