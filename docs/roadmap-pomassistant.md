@@ -55,7 +55,6 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 - [x] SonarQube (Community Build) installé sur `gummi-workshop` (Docker Compose, PostgreSQL) ; premier scan manuel : 5 remarques d'accessibilité, aucune vulnérabilité
 - [x] SonarQube dans la CI : job `sonarqube` sur les pull requests vers `dev`, Quality Gate bloquant ; accès au serveur privé par Tailscale (identité fédérée OIDC, nœud éphémère, accès limité au seul port de SonarQube)
 - [ ] Décider du rôle de CodeQL à côté de SonarQube
-- [ ] Corriger avec l'auteur les 5 remarques d'accessibilité relevées (champs de formulaire sans étiquette)
 - [ ] Scan de l'image **avant** sa publication
 - [ ] Dependabot (dépendances et actions GitHub)
 - [ ] Rapport de scan initial et documentation dans `docs/`
