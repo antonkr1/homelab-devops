@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# Vérifie l'état des services dans le homelab en testant les URL définies dans le tableau SERVICES. Affiche le code HTTP pour chaque service + retour d'état global (0 si tous les services sont OK, >0 sinon).
 set -u
 
 declare -A SERVICES=(
