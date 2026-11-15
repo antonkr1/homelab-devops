@@ -97,7 +97,6 @@
 
 ## Reste à faire
 
-- [ ] **Sécurité** : révoquer les anciens tokens, changer les mots de passe (Supabase dev, Grafana), sauvegarder hors cluster les clés Vault
 - [ ] **GitOps** : app of apps, ArgoCD sous GitOps
 - [ ] **Ingress** : migrer hors d'ingress-nginx (projet plus mis à jour depuis mars 2026)
 - [ ] **Cluster** : metrics-server, correctif Loki dans les valeurs Helm
