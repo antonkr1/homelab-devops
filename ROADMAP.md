@@ -67,8 +67,8 @@
 - [x] Serveur Minecraft (Paper) fonctionnel via Pelican
 - [x] Domaine traverse-town.com acheté, redirection de port Freebox, SRV configuré
 - [x] Connexion sans port (SRV) validée — fonctionnel depuis l'extérieur
-- [x] HTTPS sur Pelican Panel et Wings (actuellement HTTP simple, IP brute)
-
+- [x] HTTPS sur Pelican Panel et Wings
+      
 ## Terraform / Ansible (provisioning automatisé)
 - [x] VM control node gummi-ship créée (192.168.1.207)
 - [x] Ansible + Terraform installés
