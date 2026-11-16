@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 # Tourne sur la même VM que SonarQube (gummi-workshop) et sauvegarde la base de données PostgreSQL de SonarQube dans un zip avec la date et l'heure. Supprime les anciennes sauvegardes en gardant les 7 dernières.
+# Planifié par cron, chaque nuit à 2h30 :
+#   30 2 * * * /home/anton/scripts/backup-sonarqube.sh >> /home/anton/backups/sonarqube/backup.log 2>&1
+# Garde les 7 dernières sauvegardes. Code de sortie : 0 = OK, 1 = échec.
+
 set -euo pipefail
 
 BACKUP_DIR="$HOME/backups/sonarqube"

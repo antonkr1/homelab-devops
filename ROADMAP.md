@@ -97,7 +97,7 @@
 
 ## Reste à faire
 
-- [ ] **GitOps** : app of apps, ArgoCD sous GitOps
+- [x] **GitOps** : app of apps, ArgoCD sous GitOps
 - [ ] **Ingress** : migrer hors d'ingress-nginx (projet plus mis à jour depuis mars 2026)
 - [ ] **Cluster** : metrics-server, correctif Loki dans les valeurs Helm
 
