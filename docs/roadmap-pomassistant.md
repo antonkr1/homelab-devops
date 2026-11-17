@@ -57,6 +57,7 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 - [ ] Décider du rôle de CodeQL à côté de SonarQube
 - [ ] Scan de l'image **avant** sa publication
 - [ ] Dependabot (dépendances et actions GitHub)
+- [ ] Étudier des contrôles adaptés à la nature de la modification : ne lancer que les contrôles utiles selon les fichiers touchés (filtres de chemins, `paths:`), et imposer des contrôles plus stricts sur les zones sensibles (`CODEOWNERS`, Dockerfile, workflow)
 - [ ] Rapport de scan initial et documentation dans `docs/`
 
 ## Phase 2 — supervision, alertes, production en haute disponibilité
