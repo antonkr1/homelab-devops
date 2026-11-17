@@ -1,5 +1,6 @@
-# Roadmap — PoMAssistant : CI/CD, sécurité et exploitation
+# Roadmap - PoMAssistant : CI/CD, sécurité et exploitation
 
+Dernière mise à jour : 17 novembre 2026.
 
 Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026, sur 6 mois dont 3 de travail effectif.
 
@@ -12,6 +13,7 @@ Légende : `[x]` fait, `[~]` en cours ou partiel, `[ ]` prévu.
 ```
 Pull request vers main ou dev
    → scan du code (Trivy), tests (Vitest), construction de l'image sans publication, scan de l'image
+   → analyse de sécurité du code (CodeQL)
    → vers dev uniquement : analyse SonarQube, Quality Gate bloquant
 
 Push sur main ou dev
@@ -20,25 +22,25 @@ Push sur main ou dev
    → ArgoCD : mise à jour progressive, 2 réplicas, sans coupure
 ```
 
-Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. L'analyse SonarQube et la protection complète (`tests`, `image`, `sonarqube`) sont en place sur `dev` ; `main` suivra.
+Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. SonarQube et la protection complète (`tests`, `image`, `sonarqube`, `analyze (javascript-typescript)`) sont en place sur `dev` ; `main` suivra.
 
 ## État initial et cible
 
-| Domaine | Avant | Cible |
-|---|---|---|
-| Hébergement | Plateforme Netlify | Cluster Kubernetes du homelab, application sur 2 réplicas |
-| Déploiement | Via Netlify, sans contrôle | CI/CD continue et automatique, chaque version reliée à son commit |
-| Environnements | Chez un hébergeur externe | Environnements de test (`dev`) et de production séparés |
-| Tests | Aucun test automatisé | Tests unitaires lancés à chaque modification |
-| Sécurité | Aucune analyse automatique (mesuré : 7 vulnérabilités de production, 0 secret) | Analyses de sécurité avant la mise en ligne |
-| Supervision | Pas de supervision propre | Métriques, logs, tableaux de bord |
-| Authentification | Utilisateurs créés à la main dans la base | Création d'utilisateurs, sessions sécurisées |
-| Base de données | Supabase | Supabase, une base pour le test et une autre pour la production |
-| Haute disponibilité | Non | Application répliquée en production |
+| Domaine | Avant | Cible | Outils |
+|---|---|---|---|
+| Hébergement | Plateforme Netlify | Cluster Kubernetes du homelab, application sur 2 réplicas | Kubernetes, Docker |
+| Déploiement | Via Netlify, sans contrôle | CI/CD continue et automatique, chaque version reliée à son commit | GitHub Actions, ArgoCD (GitOps) |
+| Environnements | Chez un hébergeur externe | Environnements de test (`dev`) et de production séparés | Environnements GitHub, Kubernetes |
+| Tests | Aucun test automatisé | Tests unitaires lancés à chaque modification | Vitest dans le pipeline |
+| Sécurité | Aucune analyse automatique (mesuré : 7 vulnérabilités de production, 0 secret) | Analyses de sécurité avant la mise en ligne | Détection de secrets, scan des dépendances et des images (Trivy), analyse statique du code (SonarQube, CodeQL), Vault |
+| Supervision | Pas de supervision propre | Métriques, logs, tableaux de bord | Prometheus, Grafana, Loki |
+| Authentification | Utilisateurs créés à la main dans la base | Création d'utilisateurs, sessions sécurisées | Supabase Auth |
+| Base de données | Supabase | Supabase, une base pour le test et une autre pour la production | Supabase, PostgreSQL |
+| Haute disponibilité | Non | Application répliquée en production | PodDisruptionBudget |
 
 L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 
-## Phase 1 — tests, analyses de sécurité, déploiement automatique
+## Mois 1 - tests, analyses de sécurité, déploiement automatique
 
 - [x] Déploiement automatique par tag immuable (la CI modifie le dépôt d'infrastructure, ArgoCD déploie)
 - [x] État initial figé et mesuré (scan Trivy du dépôt non modifié)
@@ -48,26 +50,30 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 - [x] Image durcie : utilisateur non root, capacités retirées, seccomp, limites de ressources, sondes
 - [x] Contrôles sur pull request (scans, tests, construction sans publication)
 - [x] Premiers tests unitaires (Vitest), job `tests` aux droits minimaux, exécuté avant la construction de l'image
-- [x] Protection de branche sur `dev` : PR obligatoire, contrôles `tests`, `image` et `sonarqube` obligatoires, sans contournement (blocage du bouton de fusion vérifié sur une vraie PR)
+- [x] Protection de branche sur `dev` : PR obligatoire, contrôles `tests`, `image`, `sonarqube` et `analyze (javascript-typescript)` obligatoires, sans contournement (blocage du bouton de fusion vérifié sur une vraie PR)
 - [ ] Étendre la même protection à `main`, une fois la chaîne stabilisée sur `dev`
-- [x] Tests des composables `useSyncPairFilters` et `useSyncPairOrder`
+- [x] Tests des composables `useSyncPairFilters`, `useSyncPairOrder`, `useMonthlyOrder` et `useMonthly`
 - [~] Étendre les tests : compte à rebours (`useCountdown`) après extraction du calcul dans une fonction pure
 - [x] SonarQube (Community Build) installé sur `gummi-workshop` (Docker Compose, PostgreSQL) ; premier scan manuel : 5 remarques d'accessibilité, aucune vulnérabilité
 - [x] SonarQube dans la CI : job `sonarqube` sur les pull requests vers `dev`, Quality Gate bloquant ; accès au serveur privé par Tailscale (identité fédérée OIDC, nœud éphémère, accès limité au seul port de SonarQube)
-- [ ] Décider du rôle de CodeQL à côté de SonarQube
+- [x] CodeQL (analyse de sécurité du code JS/TS) en complément de SonarQube : workflow versionné `.github/workflows/codeql.yml`, sur push et PR vers `main` et `dev` plus une analyse hebdomadaire, contrôle obligatoire sur `dev` ; aucune alerte à ce jour
+- [x] Sauvegarde de SonarQube planifiée chaque nuit (`cron`) et restauration testée (16 novembre)
+- [ ] Nettoyage de l'intégration SonarQube : supprimer l'ancienne identité Tailscale et l'étape `curl` de contrôle
+- [ ] Contrôles adaptés à la nature de la modification : filtres de chemins, `CODEOWNERS` sur les zones sensibles
+- [ ] Corriger avec l'auteur les 5 remarques d'accessibilité relevées (champs de formulaire sans étiquette)
 - [ ] Scan de l'image **avant** sa publication
 - [ ] Dependabot (dépendances et actions GitHub)
-- [ ] Étudier des contrôles adaptés à la nature de la modification : ne lancer que les contrôles utiles selon les fichiers touchés (filtres de chemins, `paths:`), et imposer des contrôles plus stricts sur les zones sensibles (`CODEOWNERS`, Dockerfile, workflow)
 - [ ] Rapport de scan initial et documentation dans `docs/`
 
-## Phase 2 — supervision, alertes, production en haute disponibilité
+## Mois 2 - supervision, alertes, production en haute disponibilité
 
+- [~] Stockage persistant pour la supervision (Prometheus, Loki)
 - [ ] Alertes (Alertmanager) et tableaux de bord applicatifs : disponibilité, erreurs, temps de réponse
 - [ ] Environnement `prod` : second projet Supabase, variables dédiées, mise à jour depuis `main`
 - [ ] Application répliquée avec budget d'interruption (PodDisruptionBudget)
 - [ ] Webhook pour une synchronisation immédiate (au lieu du polling toutes les 3 minutes)
 
-## Phase 3 — évolutions, test de bout en bout, documentation
+## Mois 3 - évolutions, test de bout en bout, documentation
 
 - [ ] Évolutions proposées à l'auteur par pull request (corrections repérées, ancien système de mots de passe à retirer)
 - [ ] Test de bout en bout de la chaîne, du commit au pod
