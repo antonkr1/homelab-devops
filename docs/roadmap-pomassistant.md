@@ -1,8 +1,8 @@
 # Roadmap - PoMAssistant : CI/CD, sécurité et exploitation
 
-Dernière mise à jour : 17 novembre 2026.
+Dernière mise à jour : 18 novembre 2026.
 
-Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026, sur 6 mois dont 3 de travail effectif.
+Objectif : héberger l'application **PoMAssistant** (Vue 3 / Vite / Supabase, écrite par un ami) sur le homelab, avec une chaîne CI/CD de bout en bout, sécurisée et supervisée. Mon rôle est d'héberger et d'industrialiser son cycle de vie, pas de la développer. Projet démarré le 19 octobre 2026.
 
 La roadmap de l'infrastructure (Proxmox, Kubernetes, DNS, etc.) est dans [ROADMAP.md](../ROADMAP.md).
 
@@ -17,12 +17,13 @@ Pull request vers main ou dev
    → vers dev uniquement : analyse SonarQube, Quality Gate bloquant
 
 Push sur main ou dev
-   → construction + publication sur GHCR (tag immuable AAAAMMJJ-HHMM-<sha court>)
+   → construction de l'image (sans publication), scan Trivy de l'image
+   → publication sur GHCR seulement si le scan est vert (tag immuable AAAAMMJJ-HHMM-<sha court>)
    → commit GitOps dans homelab-devops (nouveau tag)
    → ArgoCD : mise à jour progressive, 2 réplicas, sans coupure
 ```
 
-Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. SonarQube et la protection complète (`tests`, `image`, `sonarqube`, `analyze (javascript-typescript)`) sont en place sur `dev` ; `main` suivra.
+Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant. La protection complète (`tests`, `image`, `analyze (javascript-typescript)`, `sonarqube`) est en place sur `dev` et sur `main`. SonarQube ne s'exécute pour l'instant que sur les PR vers `dev` : la condition du job est en cours d'élargissement aux PR vers `main` (voir Mois 1).
 
 ## État initial et cible
 
@@ -32,7 +33,7 @@ Le déploiement automatique ne concerne que l'environnement `dev` pour l'instant
 | Déploiement | Via Netlify, sans contrôle | CI/CD continue et automatique, chaque version reliée à son commit | GitHub Actions, ArgoCD (GitOps) |
 | Environnements | Chez un hébergeur externe | Environnements de test (`dev`) et de production séparés | Environnements GitHub, Kubernetes |
 | Tests | Aucun test automatisé | Tests unitaires lancés à chaque modification | Vitest dans le pipeline |
-| Sécurité | Aucune analyse automatique (mesuré : 7 vulnérabilités de production, 0 secret) | Analyses de sécurité avant la mise en ligne | Détection de secrets, scan des dépendances et des images (Trivy), analyse statique du code (SonarQube, CodeQL), Vault |
+| Sécurité | Aucune analyse automatique (mesuré : 7 vulnérabilités de production, 0 secret) | Analyses de sécurité avant la mise en ligne | Détection de secrets, scan des dépendances et des images (Trivy), analyse statique du code (SonarQube, CodeQL), mise à jour automatique des dépendances (Renovate), Vault |
 | Supervision | Pas de supervision propre | Métriques, logs, tableaux de bord | Prometheus, Grafana, Loki |
 | Authentification | Utilisateurs créés à la main dans la base | Création d'utilisateurs, sessions sécurisées | Supabase Auth |
 | Base de données | Supabase | Supabase, une base pour le test et une autre pour la production | Supabase, PostgreSQL |
@@ -51,18 +52,19 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 - [x] Contrôles sur pull request (scans, tests, construction sans publication)
 - [x] Premiers tests unitaires (Vitest), job `tests` aux droits minimaux, exécuté avant la construction de l'image
 - [x] Protection de branche sur `dev` : PR obligatoire, contrôles `tests`, `image`, `sonarqube` et `analyze (javascript-typescript)` obligatoires, sans contournement (blocage du bouton de fusion vérifié sur une vraie PR)
-- [ ] Étendre la même protection à `main`, une fois la chaîne stabilisée sur `dev`
+- [x] Protection de `main` : PR obligatoire, contrôles `tests`, `image`, `analyze (javascript-typescript)` et `sonarqube`, branche à jour avant fusion, sans contournement ; blocage du bouton de fusion vérifié sur une PR `dev` vers `main` (18 novembre)
+- [~] Corriger la condition du job `sonarqube` : il était sauté sur les PR vers `main` (un contrôle sauté compte comme réussi, l'obligation ne vérifiait donc rien) ; correction en cours sur `dev`, puis vérification sur la PR `dev` vers `main`
 - [x] Tests des composables `useSyncPairFilters`, `useSyncPairOrder`, `useMonthlyOrder` et `useMonthly`
 - [~] Étendre les tests : compte à rebours (`useCountdown`) après extraction du calcul dans une fonction pure
 - [x] SonarQube (Community Build) installé sur `gummi-workshop` (Docker Compose, PostgreSQL) ; premier scan manuel : 5 remarques d'accessibilité, aucune vulnérabilité
 - [x] SonarQube dans la CI : job `sonarqube` sur les pull requests vers `dev`, Quality Gate bloquant ; accès au serveur privé par Tailscale (identité fédérée OIDC, nœud éphémère, accès limité au seul port de SonarQube)
 - [x] CodeQL (analyse de sécurité du code JS/TS) en complément de SonarQube : workflow versionné `.github/workflows/codeql.yml`, sur push et PR vers `main` et `dev` plus une analyse hebdomadaire, contrôle obligatoire sur `dev` ; aucune alerte à ce jour
 - [x] Sauvegarde de SonarQube planifiée chaque nuit (`cron`) et restauration testée (16 novembre)
-- [ ] Nettoyage de l'intégration SonarQube : supprimer l'ancienne identité Tailscale et l'étape `curl` de contrôle
+- [x] Étape `curl` de diagnostic retirée du job `sonarqube`
 - [ ] Contrôles adaptés à la nature de la modification : filtres de chemins, `CODEOWNERS` sur les zones sensibles
-- [ ] Corriger avec l'auteur les 5 remarques d'accessibilité relevées (champs de formulaire sans étiquette)
-- [ ] Scan de l'image **avant** sa publication
-- [ ] Dependabot (dépendances et actions GitHub)
+- [x] Scan de l'image **avant** sa publication : le job `image` construit sans publier (`load: true`), scanne avec Trivy, puis ne publie qu'ensuite (push uniquement) ; une image vulnérable n'atteint plus GHCR, vérifié de bout en bout sur `dev`
+- [x] Mises à jour automatiques : Renovate (en remplacement de Dependabot), configuré sur la branche `dev` ; première PR fusionnée (épinglage des dépendances, #18) ; choix expliqué dans [renovate.md](docs\decisions\renovate-vs-dependabot.md)
+- [] Tester les mises à jour de Renovate sur les actions GitHub (`checkout@v4`, Node 20 en fin de support)
 - [ ] Rapport de scan initial et documentation dans `docs/`
 
 ## Mois 2 - supervision, alertes, production en haute disponibilité
@@ -81,5 +83,6 @@ L'état initial mesuré est détaillé dans `etat-initial-pomassistant.md`.
 
 ## Suivi et points de vigilance
 
-- Jetons `GITOPS_TOKEN` (limité au dépôt d'infrastructure) et `SONAR_TOKEN` (jeton d'analyse de projet), tous deux valables 90 jours : noter leur date de création et les renouveler à temps, sinon la CI ne pourra plus déployer ni analyser.
+- GitHub rapproche les contrôles obligatoires par nom et par commit, pas par événement : un contrôle sauté compte comme réussi. Vérifier qu'un contrôle obligatoire s'exécute vraiment sur chaque type de PR.
 - Vérifier régulièrement que les pods tournent avec le dernier tag et que les runs sur `dev` sont verts.
+
