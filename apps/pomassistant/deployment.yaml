@@ -24,7 +24,7 @@ spec:
         - name: web
           # Image construite par GitHub Actions (branche dev).
           # Le tag est mis à jour automatiquement par le pipeline (commit dans ce dépôt).
-          image: ghcr.io/antonkr1/pomassistant:20261118-1536-84fe842
+          image: ghcr.io/antonkr1/pomassistant:20261118-1543-e9c1e79
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
